@@ -1,32 +1,19 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
-} from 'typeorm';
-import { CLF } from './clf.entity';
-import { SHG } from './shg.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class VO {
+@Entity({ name: 'vo' })
+export class VOEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: false, unique: true })
+  groupId: string;
 
   @Column()
   name: string;
 
   @Column()
-  location: string;
-
-  @ManyToOne(() => CLF, (clf) => clf.vos, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'clfId' })
-  clf: CLF;
+  district: string;
 
   @Column()
   clfId: string;
-
-  @OneToMany(() => SHG, (shg) => shg.vo)
-  shgs: SHG[];
 }

@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClfDto } from './dto/create-clf.dto';
 import { UpdateClfDto } from './dto/update-clf.dto';
+import { DbService } from '@app/common/db/db.service';
 
 @Injectable()
 export class ClfService {
-  create(createClfDto: CreateClfDto) {
-    return 'This action adds a new clf';
+  constructor(private dbService: DbService) {}
+
+  async create(createClfDto: CreateClfDto) {
+    const groupId = `CLF${Date.now().toString(36)}`;
+    const clf = this.dbService.clfRepo.create({
+      ...createClfDto,
+      groupId,
+    });
+    return await this.dbService.clfRepo.save(clf);
   }
 
-  findAll() {
-    return `This action returns all clf`;
+  async findAll() {
+    return await this.dbService.clfRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} clf`;
+  async findOne(id: string) {
+    return await this.dbService.clfRepo.findOneBy({
+      id,
+    });
   }
 
-  update(id: number, updateClfDto: UpdateClfDto) {
-    return `This action updates a #${id} clf`;
+  async update(id: string, updateClfDto: UpdateClfDto) {
+    return await this.dbService.clfRepo.update(id, updateClfDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} clf`;
+  async remove(id: string) {
+    return await this.dbService.clfRepo.delete(id);
   }
 }

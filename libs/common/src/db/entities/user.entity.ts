@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { UserRole } from '../enums/user-role.enum';
 
-@Entity()
-export class User {
+@Entity({ name: 'user' })
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -34,7 +34,7 @@ export class User {
   organizationId: string;
 
   @Column()
-  organizationType: string; // shg, vo, clf, trlm_admin, nic_admin
+  organizationType: string;
 
   @CreateDateColumn()
   createdAt: Date;

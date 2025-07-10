@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateClfDto {
+export class CreateShgDto {
   @IsString()
   @IsOptional()
   groupId: string;
@@ -11,5 +11,17 @@ export class CreateClfDto {
 
   @IsString()
   @IsNotEmpty()
+  block: string;
+
+  @IsString()
+  @IsNotEmpty()
   district: string;
+
+  @IsString()
+  @IsNotEmpty()
+  voId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  clfId: string;
 }

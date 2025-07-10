@@ -1,10 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { registerAs } from '@nestjs/config';
-import { User } from '../db/entities/user.entity';
-import { SHG } from '../db/entities/shg.entity';
-import { VO } from '../db/entities/vo.entity';
-import { CLF } from '../db/entities/clf.entity';
-import { TRLMAdmin } from '../db/entities/trlm-admin.entity';
+import { UserEntity } from '../db/entities/user.entity';
+import { SHGEntity } from '../db/entities/shg.entity';
+import { VOEntity } from '../db/entities/vo.entity';
+import { CLFEntity } from '../db/entities/clf.entity';
+import { TRLMAdminEntity } from '../db/entities/trlm-admin.entity';
 
 export const databaseConfig = registerAs(
   'database',
@@ -14,7 +14,7 @@ export const databaseConfig = registerAs(
       url:
         process.env.DATABASE_URL ||
         'postgres://postgres:postgres@localhost:5432/shg-db',
-      entities: [User, SHG, VO, CLF, TRLMAdmin],
+      entities: [UserEntity, SHGEntity, VOEntity, CLFEntity, TRLMAdminEntity],
       synchronize: true,
       autoLoadEntities: true,
     }) as TypeOrmModuleOptions,

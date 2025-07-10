@@ -1,23 +1,15 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { VO } from './vo.entity';
-import { CLF } from './clf.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity()
-export class SHG {
+@Entity({ name: 'shg' })
+export class SHGEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  name: string;
+  @Column({ nullable: false, unique: true })
+  groupId: string;
 
-  @Column()
-  location: string;
+  @Column({ nullable: false })
+  name: string;
 
   @Column()
   block: string;
@@ -25,16 +17,8 @@ export class SHG {
   @Column()
   district: string;
 
-  @ManyToOne(() => VO, (vo) => vo.shgs, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'voId' })
-  vo: VO;
-
   @Column()
   voId: string;
-
-  @ManyToOne(() => CLF, (clf) => clf.shgs, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'clfId' })
-  clf: CLF;
 
   @Column()
   clfId: string;

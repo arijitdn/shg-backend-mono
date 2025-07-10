@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { SHG } from './entities/shg.entity';
-import { VO } from './entities/vo.entity';
-import { CLF } from './entities/clf.entity';
-import { TRLMAdmin } from './entities/trlm-admin.entity';
+import { UserEntity } from './entities/user.entity';
+import { SHGEntity } from './entities/shg.entity';
+import { VOEntity } from './entities/vo.entity';
+import { CLFEntity } from './entities/clf.entity';
+import { TRLMAdminEntity } from './entities/trlm-admin.entity';
 
 @Injectable()
 export class DbService {
   constructor(
-    @InjectRepository(User)
-    public readonly userRepo: Repository<User>,
+    @InjectRepository(UserEntity)
+    public readonly userRepo: Repository<UserEntity>,
 
-    @InjectRepository(SHG)
-    public readonly shgRepo: Repository<SHG>,
+    @InjectRepository(SHGEntity)
+    public readonly shgRepo: Repository<SHGEntity>,
 
-    @InjectRepository(VO)
-    public readonly voRepo: Repository<VO>,
+    @InjectRepository(VOEntity)
+    public readonly voRepo: Repository<VOEntity>,
 
-    @InjectRepository(CLF)
-    public readonly clfRepo: Repository<CLF>,
+    @InjectRepository(CLFEntity)
+    public readonly clfRepo: Repository<CLFEntity>,
 
-    @InjectRepository(TRLMAdmin)
-    public readonly trlmRepo: Repository<TRLMAdmin>,
+    @InjectRepository(TRLMAdminEntity)
+    public readonly trlmRepo: Repository<TRLMAdminEntity>,
   ) {}
 }

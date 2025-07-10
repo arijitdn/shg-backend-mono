@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { TRLMLevel } from '../enums/trlm-level.enum';
 
-@Entity()
-export class TRLMAdmin {
+@Entity({ name: 'trlm_admin' })
+export class TRLMAdminEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,12 +26,6 @@ export class TRLMAdmin {
 
   @Column({ type: 'enum', enum: TRLMLevel })
   level: TRLMLevel;
-
-  @Column()
-  location: string;
-
-  //   @OneToMany(() => CLF, (clf) => clf.trlm)
-  //   clfs: CLF[];
 
   @CreateDateColumn()
   createdAt: Date;

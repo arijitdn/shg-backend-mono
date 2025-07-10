@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ClfService } from './clf.service';
 import { CreateClfDto } from './dto/create-clf.dto';
 import { UpdateClfDto } from './dto/update-clf.dto';
@@ -19,16 +27,16 @@ export class ClfController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.clfService.findOne(+id);
+    return this.clfService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClfDto: UpdateClfDto) {
-    return this.clfService.update(+id, updateClfDto);
+    return this.clfService.update(id, updateClfDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.clfService.remove(+id);
+    return this.clfService.remove(id);
   }
 }
