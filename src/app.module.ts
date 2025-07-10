@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { validateEnv } from '@app/common/config/validate-env';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ClfModule } from './clf/clf.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
       ],
     }),
     AuthModule,
+    ClfModule,
   ],
   controllers: [AppController],
   providers: [AppService],
