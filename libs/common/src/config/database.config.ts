@@ -8,13 +8,14 @@ import { TRLMAdmin } from '../db/entities/trlm-admin.entity';
 
 export const databaseConfig = registerAs(
   'database',
-  (): TypeOrmModuleOptions => ({
-    type: 'postgres',
-    url:
-      process.env.DATABASE_URL ||
-      'postgres://postgres:postgres@localhost:5432/shg-db',
-    entities: [User, SHG, VO, CLF, TRLMAdmin],
-    synchronize: true,
-    autoLoadEntities: true,
-  }),
+  () =>
+    ({
+      type: 'postgres',
+      url:
+        process.env.DATABASE_URL ||
+        'postgres://postgres:postgres@localhost:5432/shg-db',
+      entities: [User, SHG, VO, CLF, TRLMAdmin],
+      synchronize: true,
+      autoLoadEntities: true,
+    }) as TypeOrmModuleOptions,
 );
