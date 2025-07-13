@@ -15,6 +15,7 @@ import {
 } from 'class-validator';
 import { productType } from '../enums/product-type.enum';
 import { productCategory } from '../enums/product-category.enum';
+import { ProductStatus } from '../enums/product-status.enum';
 
 @Entity()
 export class ProductEntity {
@@ -57,6 +58,13 @@ export class ProductEntity {
   @Column()
   @IsString()
   shgId: string;
+
+  @Column({
+    type: 'enum',
+    enum: ProductStatus,
+    default: ProductStatus.PENDING,
+  })
+  status: ProductStatus;
 
   @Column({ default: false, nullable: true }) // Enforce Conditional Validation in DTO
   @IsBoolean()

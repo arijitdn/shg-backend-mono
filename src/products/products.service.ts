@@ -8,6 +8,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DbService } from '@app/common/db/db.service';
 import { ProductEntity } from '@app/common/db/entities';
 import { productType } from '@app/common/db/enums/product-type.enum';
+import { ProductStatus } from '@app/common/db/enums/product-status.enum';
 
 @Injectable()
 export class ProductsService {
@@ -64,6 +65,10 @@ export class ProductsService {
     }
 
     product.isRecommended = recommend;
+
+    product.status = recommend
+      ? ProductStatus.RECOMMENDED
+      : ProductStatus.REJECTED;
     return this.dbService.productRepo.save(product);
   }
 
@@ -80,6 +85,8 @@ export class ProductsService {
 
     product.isApproved = approve;
     product.verificationDate = new Date();
+
+    product.status = approve ? ProductStatus.APPROVED : ProductStatus.REJECTED;
     return this.dbService.productRepo.save(product);
   }
 

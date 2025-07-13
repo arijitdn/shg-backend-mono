@@ -1,0 +1,6 @@
+export enum ProductStatus {
+  PENDING = 'PENDING',
+  RECOMMENDED = 'RECOMMENDED',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+}
