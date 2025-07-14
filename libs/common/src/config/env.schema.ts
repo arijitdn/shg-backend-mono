@@ -7,6 +7,7 @@ export const envSchema = z.object({
     .string()
     .default('postgres://postgres:postgres@localhost:5432/shg-db'),
   JWT_SECRET: z.string().default('super-secret-jwt'),
+  JWT_REFRESH_SECRET: z.string().default('super-secret-refresh'),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;
