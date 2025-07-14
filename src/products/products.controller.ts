@@ -40,21 +40,18 @@ export class ProductsController {
     return this.productsService.remove(id);
   }
 
-  // VO dashboard products
   @Get('vo/list')
   //@Roles(UserRole.VO)
   getProductsForVO() {
     return this.productsService.findProductsForVO();
   }
 
-  // CLF dashboard products
   @Get('clf/list')
   //@Roles(UserRole.CLF)
   getProductsForCLF() {
     return this.productsService.findProductsForCLF();
   }
 
-  // VO recommends/rejects product
   @Patch(':id/vo-recommendation')
   //@Roles(UserRole.VO)
   recommendProduct(
@@ -64,7 +61,6 @@ export class ProductsController {
     return this.productsService.recommendByVO(id, body.recommend);
   }
 
-  // CLF approves/rejects product
   @Patch(':id/clf-approval')
   //@Roles(UserRole.CLF)
   approveProduct(@Param('id') id: string, @Body() body: { approve: boolean }) {

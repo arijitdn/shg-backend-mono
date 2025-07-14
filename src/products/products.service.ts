@@ -28,7 +28,7 @@ export class ProductsService {
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
-    return await product;
+    return product;
   }
 
   async update(
@@ -37,24 +37,24 @@ export class ProductsService {
   ): Promise<ProductEntity> {
     const product = await this.findOne(id);
     const updated = Object.assign(product, updateProductDto);
-    return await this.dbService.productRepo.save(updated);
+    const saved = await this.dbService.productRepo.save(updated);
+    return saved;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<ProductEntity | null> {
     const product = await this.findOne(id);
-    await this.dbService.productRepo.remove(product);
+    const saved = await this.dbService.productRepo.remove(product);
+    return saved;
   }
 
-  // Optional: Find by SHG or User
-  async findByShgId(shgId: string): Promise<ProductEntity[]> {
+  async findProductByShgId(shgId: string): Promise<ProductEntity[]> {
     return await this.dbService.productRepo.find({ where: { shgId } });
   }
 
-  async findByUserId(userId: string): Promise<ProductEntity[]> {
+  async findProductByUserId(userId: string): Promise<ProductEntity[]> {
     return await this.dbService.productRepo.find({ where: { userId } });
   }
 
-  // VO Recommendation
   async recommendByVO(id: string, recommend: boolean): Promise<ProductEntity> {
     const product = await this.findOne(id);
 
@@ -72,7 +72,6 @@ export class ProductsService {
     return this.dbService.productRepo.save(product);
   }
 
-  // CLF Approval
   async approveByCLF(id: string, approve: boolean): Promise<ProductEntity> {
     const product = await this.findOne(id);
 

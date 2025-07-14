@@ -12,19 +12,21 @@ import { UserEntity } from '@app/common/db/entities';
 import { DbService } from '@app/common/db/db.service';
 import { UserRole } from '@app/common/db/enums/user-role.enum';
 import { AdminLoginDto } from './dto/login-admin.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly dbService: DbService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async createMember(dto: createMemberDto) {
     const exists = await this.dbService.userRepo.findOneBy({
       phone: dto.phone,
     });
-    if (exists) throw new ConflictException('Phone already in use');
+    if (exists) throw new ConflictException('Phone is already in use');
 
     const hash = await this.hashPassword(dto.password);
     const user = this.dbService.userRepo.create({
@@ -46,10 +48,9 @@ export class AuthService {
     const user = this.dbService.userRepo.create({
       ...createAdminDto,
       password: hash,
-      role: UserRole.TRLM_ADMIN,
     });
     await this.dbService.userRepo.save(user);
-    return { message: 'TRLM Admin created successfully' };
+    return { message: 'Admin created successfully' };
   }
 
   async loginMember(loginDto: LoginDto) {
@@ -63,11 +64,11 @@ export class AuthService {
         user.role,
       )
     ) {
-      throw new UnauthorizedException('Invalid member credentials');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const valid = await this.verifyPassword(loginDto.password, user.password);
-    if (!valid) throw new UnauthorizedException('Invalid password');
+    if (!valid) throw new UnauthorizedException('Invalid credentials');
     const tokens = this.generateTokens(user);
     return {
       ...tokens,
@@ -87,16 +88,18 @@ export class AuthService {
 
     if (
       !user ||
-      ![UserRole.TRLM_ADMIN, UserRole.NIC_ADMIN].includes(user.role)
+      ![UserRole.BMMU_ADMIN, UserRole.DMMU_ADMIN, UserRole.NIC_ADMIN].includes(
+        user.role,
+      )
     ) {
-      throw new UnauthorizedException('Invalid admin credentials');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const valid = await this.verifyPassword(
       adminLoginDto.password,
       user.password,
     );
-    if (!valid) throw new UnauthorizedException('Invalid password');
+    if (!valid) throw new UnauthorizedException('Invalid credentials');
     const tokens = this.generateTokens(user);
     return {
       ...tokens,
@@ -113,7 +116,7 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
 
       const user = await this.dbService.userRepo.findOneBy({ id: payload.sub });
@@ -146,7 +149,8 @@ export class AuthService {
   }
 
   private async hashPassword(pw: string): Promise<string> {
-    return bcrypt.hash(pw, 10);
+    const saltRounds = 10;
+    return bcrypt.hash(pw, saltRounds);
   }
 
   private async verifyPassword(raw: string, hash: string): Promise<boolean> {
@@ -163,16 +167,16 @@ export class AuthService {
   private generateAccessToken(user: UserEntity): string {
     const payload = { sub: user.id, role: user.role, phone: user.phone };
     return this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '15m',
+      secret: this.configService.get('JWT_SECRET'),
+      expiresIn: this.configService.get('JWT_EXPIRY') || '15m',
     });
   }
 
   private generateRefreshToken(user: UserEntity): string {
     const payload = { sub: user.id };
     return this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: '7d',
+      secret: this.configService.get('JWT_REFRESH_SECRET'),
+      expiresIn: this.configService.get('JWT_REFRESH_EXPIRY') || '7d',
     });
   }
 }
