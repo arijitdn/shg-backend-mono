@@ -6,6 +6,7 @@ import { SHGEntity } from './entities/shg.entity';
 import { VOEntity } from './entities/vo.entity';
 import { CLFEntity } from './entities/clf.entity';
 import { TRLMAdminEntity } from './entities/trlm-admin.entity';
+import { ProductEntity } from './entities';
 
 @Injectable()
 export class DbService {
@@ -24,5 +25,8 @@ export class DbService {
 
     @InjectRepository(TRLMAdminEntity)
     public readonly trlmRepo: Repository<TRLMAdminEntity>,
+
+    @InjectRepository(ProductEntity)
+    public readonly productRepo: Repository<ProductEntity>,
   ) {}
 }

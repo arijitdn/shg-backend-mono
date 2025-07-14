@@ -6,9 +6,10 @@ import { ClfModule } from './clf/clf.module';
 import { CoreModule } from '@app/common/core';
 import { ShgModule } from './shg/shg.module';
 import { VoModule } from './vo/vo.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [CoreModule, AuthModule, ShgModule, VoModule, ClfModule],
+  imports: [CoreModule, AuthModule, ShgModule, VoModule, ClfModule, ProductsModule],
   controllers: [AppController],
   providers: [AppService],
 })

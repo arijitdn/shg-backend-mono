@@ -6,6 +6,7 @@ import { VOEntity } from './entities/vo.entity';
 import { CLFEntity } from './entities/clf.entity';
 import { TRLMAdminEntity } from './entities/trlm-admin.entity';
 import { DbService } from './db.service';
+import { ProductEntity } from './entities';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DbService } from './db.service';
       VOEntity,
       CLFEntity,
       TRLMAdminEntity,
+      ProductEntity,
     ]),
   ],
   providers: [DbService],
