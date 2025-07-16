@@ -25,7 +25,6 @@ export class ProductsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new product' })
-  @ApiResponse({ status: 201, description: 'Product created successfully' })
   @ApiBody({ type: CreateProductDto })
   create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
@@ -33,7 +32,6 @@ export class ProductsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all products' })
-  @ApiResponse({ status: 200, description: 'List of all products' })
   findAll() {
     return this.productsService.findAll();
   }
@@ -41,7 +39,6 @@ export class ProductsController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  @ApiResponse({ status: 200, description: 'Product found' })
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(id);
   }
@@ -50,7 +47,6 @@ export class ProductsController {
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
   @ApiBody({ type: UpdateProductDto })
-  @ApiResponse({ status: 200, description: 'Product updated successfully' })
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(id, updateProductDto);
   }
@@ -58,7 +54,6 @@ export class ProductsController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  @ApiResponse({ status: 200, description: 'Product deleted successfully' })
   remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
@@ -66,7 +61,6 @@ export class ProductsController {
   @Get('vo/list')
   //@Roles(UserRole.VO)
   @ApiOperation({ summary: 'Get products for VO role' })
-  @ApiResponse({ status: 200, description: 'List of products for VO users' })
   getProductsForVO() {
     return this.productsService.findProductsForVO();
   }
@@ -74,7 +68,6 @@ export class ProductsController {
   @Get('clf/list')
   //@Roles(UserRole.CLF)
   @ApiOperation({ summary: 'Get products for CLF role' })
-  @ApiResponse({ status: 200, description: 'List of products for CLF users' })
   getProductsForCLF() {
     return this.productsService.findProductsForCLF();
   }
@@ -91,7 +84,6 @@ export class ProductsController {
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'VO recommendation updated' })
   recommendProduct(
     @Param('id') id: string,
     @Body() body: { recommend: boolean },
@@ -110,7 +102,6 @@ export class ProductsController {
       },
     },
   })
-  @ApiResponse({ status: 200, description: 'CLF approval updated' })
   //@Roles(UserRole.CLF)
   approveProduct(@Param('id') id: string, @Body() body: { approve: boolean }) {
     return this.productsService.approveByCLF(id, body.approve);
