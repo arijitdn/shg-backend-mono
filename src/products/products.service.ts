@@ -27,8 +27,7 @@ export class ProductsService {
       imageUrl = await this.fileStorageService.uploadFile(image);
     }
     const product = this.dbService.productRepo.create(
-      ...createProductDto,
-      imageUrl,
+      Object.assign({}, createProductDto, { imageUrl }),
     );
     return await this.dbService.productRepo.save(product);
   }
