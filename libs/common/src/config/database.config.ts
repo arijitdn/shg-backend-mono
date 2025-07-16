@@ -5,6 +5,7 @@ import { SHGEntity } from '../db/entities/shg.entity';
 import { VOEntity } from '../db/entities/vo.entity';
 import { CLFEntity } from '../db/entities/clf.entity';
 import { TRLMAdminEntity } from '../db/entities/trlm-admin.entity';
+import { ProductEntity } from '../db/entities';
 
 export const databaseConfig = registerAs(
   'database',
@@ -14,7 +15,14 @@ export const databaseConfig = registerAs(
       url:
         process.env.DATABASE_URL ||
         'postgres://postgres:postgres@localhost:5432/shg-db',
-      entities: [UserEntity, SHGEntity, VOEntity, CLFEntity, TRLMAdminEntity],
+      entities: [
+        UserEntity,
+        SHGEntity,
+        VOEntity,
+        CLFEntity,
+        TRLMAdminEntity,
+        ProductEntity,
+      ],
       synchronize: true,
       autoLoadEntities: true,
     }) as TypeOrmModuleOptions,
