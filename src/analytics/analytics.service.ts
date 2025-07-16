@@ -6,6 +6,37 @@ import { In } from 'typeorm';
 export class AnalyticsService {
   constructor(private dbService: DbService) {}
 
+  async getShgStats(VoId?: string, clfId?: string) {
+    const totalSHGs = await this.dbService.shgRepo.count();
+    const totalVOs = await this.dbService.voRepo.count();
+    const totalCLFs = await this.dbService.clfRepo.count();
+
+    const totalShgByVo = VoId
+      ? await this.dbService.shgRepo.count({
+          where: { voId: VoId },
+        })
+      : undefined;
+    const totalVoByClf = clfId
+      ? await this.dbService.voRepo.count({
+          where: { clfId },
+        })
+      : undefined;
+    const totalShgByClf = clfId
+      ? await this.dbService.shgRepo.count({
+          where: { clfId },
+        })
+      : undefined;
+
+    return {
+      totalSHGs,
+      totalVOs,
+      totalCLFs,
+      totalShgByVo,
+      totalVoByClf,
+      totalShgByClf,
+    };
+  }
+
   async getProductStats(shgId?: string, voId?: string, clfId?: string) {
     const totalProducts = await this.dbService.productRepo.count();
     const byShg = shgId
@@ -34,7 +65,6 @@ export class AnalyticsService {
           },
         });
       }
-
       if (clfId && shgIds.length > 0) {
         byClf = await this.dbService.productRepo.count({
           where: {

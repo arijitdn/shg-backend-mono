@@ -6,6 +6,15 @@ import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 
+  @Get('shg')
+  getShgStats(
+    @Query('shgId') shgId?: string,
+    @Query('voId') voId?: string,
+    @Query('clfId') clfId?: string,
+  ) {
+    return this.analyticsService.getShgStats(voId, clfId);
+  }
+
   @Get('products')
   @ApiOperation({ summary: 'Get Product statistics by SHG, VO, or CLF' })
   @ApiQuery({ name: 'shgId', required: false })
