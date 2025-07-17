@@ -34,9 +34,6 @@ export class CreateProductDto {
   @IsPositive()
   stock: number;
 
-  @IsUrl()
-  imgUrl: string;
-
   @IsString()
   userId: string;
 
