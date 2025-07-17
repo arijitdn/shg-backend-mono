@@ -9,13 +9,26 @@ import { DbService } from '@app/common/db/db.service';
 import { ProductEntity } from '@app/common/db/entities';
 import { productType } from '@app/common/db/enums/product-type.enum';
 import { ProductStatus } from '@app/common/db/enums/product-status.enum';
+import { StorageService } from '@app/storage';
 
 @Injectable()
 export class ProductsService {
-  constructor(private dbService: DbService) {}
+  constructor(
+    private dbService: DbService,
+    private readonly storageService: StorageService,
+  ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<ProductEntity> {
-    const product = this.dbService.productRepo.create(createProductDto);
+  async create(
+    createProductDto: CreateProductDto,
+    image?: Express.Multer.File,
+  ) {
+    let imageUrl: string | null = null;
+    if (image) {
+      imageUrl = await this.storageService.uploadFile(image);
+    }
+    const product = this.dbService.productRepo.create(
+      Object.assign({}, createProductDto, { imageUrl }),
+    );
     return await this.dbService.productRepo.save(product);
   }
 
@@ -34,8 +47,14 @@ export class ProductsService {
   async update(
     id: string,
     updateProductDto: UpdateProductDto,
-  ): Promise<ProductEntity> {
+    image?: Express.Multer.File,
+  ) {
     const product = await this.findOne(id);
+    if (!product) throw new NotFoundException('Product not found');
+    if (image) {
+      if (product.imgUrl) await this.storageService.deleteFile(product.imgUrl);
+      product.imgUrl = await this.storageService.uploadFile(image);
+    }
     const updated = Object.assign(product, updateProductDto);
     const saved = await this.dbService.productRepo.save(updated);
     return saved;
@@ -43,6 +62,10 @@ export class ProductsService {
 
   async remove(id: string): Promise<ProductEntity | null> {
     const product = await this.findOne(id);
+    if (!product) throw new NotFoundException('Product not found');
+    if (product.imgUrl) {
+      await this.storageService.deleteFile(product.imgUrl);
+    }
     const saved = await this.dbService.productRepo.remove(product);
     return saved;
   }

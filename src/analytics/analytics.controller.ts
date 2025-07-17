@@ -6,29 +6,30 @@ import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 
+  @Get('shg')
+  getShgStats(
+    @Query('shgId') shgId?: string,
+    @Query('voId') voId?: string,
+    @Query('clfId') clfId?: string,
+  ) {
+    return this.analyticsService.getShgStats(voId, clfId);
+  }
+
   @Get('products')
   @ApiOperation({ summary: 'Get Product statistics by SHG, VO, or CLF' })
   @ApiQuery({ name: 'shgId', required: false })
   @ApiQuery({ name: 'voId', required: false })
   @ApiQuery({ name: 'clfId', required: false })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns product stats',
-    schema: {
-      type: 'object',
-      properties: {
-        totalProducts: { type: 'number' },
-        byShg: { type: 'number', nullable: true },
-        byVo: { type: 'number', nullable: true },
-        byClf: { type: 'number', nullable: true },
-      },
-    },
-  })
   getProductStats(
     @Query('shgId') shgId?: string,
     @Query('voId') voId?: string,
     @Query('clfId') clfId?: string,
   ) {
     return this.analyticsService.getProductStats(shgId, voId, clfId);
+  }
+
+  @Get('admin')
+  getAdminStats(@Query('post') post?: string) {
+    return this.analyticsService.getAdminStats(post);
   }
 }

@@ -37,12 +37,11 @@ export class AuthService {
     await this.dbService.userRepo.save(user);
     return { message: 'Member created successfully' };
   }
-
   async createAdmin(createAdminDto: CreateAdminDto) {
     const exists = await this.dbService.userRepo.findOneBy({
       email: createAdminDto.email,
     });
-    if (exists) throw new ConflictException('Phone already in use');
+    if (exists) throw new ConflictException('email already in use');
 
     const hash = await this.hashPassword(createAdminDto.password);
     const user = this.dbService.userRepo.create({
