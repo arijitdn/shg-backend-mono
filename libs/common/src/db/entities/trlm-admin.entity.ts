@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { TRLMLevel } from '../enums/trlm-level.enum';
+import { employeePost } from '../enums/employee-post.enum';
 
 @Entity({ name: 'trlm_admin' })
 export class TRLMAdminEntity {
@@ -26,6 +27,9 @@ export class TRLMAdminEntity {
 
   @Column({ type: 'enum', enum: TRLMLevel })
   level: TRLMLevel;
+
+  @Column({ type: 'enum', enum: employeePost })
+  post: employeePost;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -27,4 +27,9 @@ export class AnalyticsController {
   ) {
     return this.analyticsService.getProductStats(shgId, voId, clfId);
   }
+
+  @Get('admin')
+  getAdminStats(@Query('post') post?: string) {
+    return this.analyticsService.getAdminStats(post);
+  }
 }

@@ -37,7 +37,6 @@ export class AuthService {
     await this.dbService.userRepo.save(user);
     return { message: 'Member created successfully' };
   }
-
   async createAdmin(createAdminDto: CreateAdminDto) {
     const exists = await this.dbService.userRepo.findOneBy({
       email: createAdminDto.email,
