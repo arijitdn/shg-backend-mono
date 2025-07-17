@@ -27,6 +27,24 @@ export class AnalyticsController {
   ) {
     return this.analyticsService.getProductStats(shgId, voId, clfId);
   }
+  @Get('orders')
+  getOrderStats(
+    @Query('shgId') shgId?: string,
+    @Query('voId') voId?: string,
+    @Query('clfId') clfId?: string,
+    @Query('userId') userId?: string,
+    @Query('type') type?: string,
+    @Query('deliveryType') deliveryType?: string,
+  ) {
+    return this.analyticsService.getOrderStats(
+      shgId,
+      voId,
+      clfId,
+      userId,
+      type,
+      deliveryType,
+    );
+  }
 
   @Get('admin')
   getAdminStats(@Query('post') post?: string) {

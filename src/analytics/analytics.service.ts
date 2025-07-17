@@ -1,7 +1,7 @@
 import { DbService } from '@app/common/db/db.service';
 import { employeePost } from '@app/common/db/enums/employee-post.enum';
 import { Injectable } from '@nestjs/common';
-import { In } from 'typeorm';
+import { In, MoreThan } from 'typeorm';
 
 @Injectable()
 export class AnalyticsService {
@@ -82,6 +82,33 @@ export class AnalyticsService {
       byClf,
     };
   }
+  async getOrderStats(
+    shgId?: string,
+    voId?: string,
+    clfId?: string,
+    userId?: string,
+    type?: string,
+    deliveryType?: string,
+  ) {
+    const where: any = {};
+
+    if (shgId) where.trlmId = shgId;
+    if (voId) where.voId = voId;
+    if (clfId) where.clfId = clfId;
+    if (userId) where.customerId = userId;
+    if (type === 'single') where.quantity = 1;
+    if (type === 'bulk') where.quantity = MoreThan(1);
+    if (deliveryType) where['deliveryAddress.addressType'] = deliveryType;
+
+    const totalOrders = await this.dbService.orderRepo.count();
+    const filteredOrders = await this.dbService.orderRepo.count({ where });
+
+    return {
+      totalOrders,
+      filteredOrders,
+    };
+  }
+
   async getAdminStats(post?: string) {
     const totalEmployees = await this.dbService.trlmRepo.count();
 
