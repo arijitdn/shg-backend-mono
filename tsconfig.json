@@ -18,23 +18,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ],
-      "@app/notifications": [
-        "libs/notifications/src"
-      ],
-      "@app/notifications/*": [
-        "libs/notifications/src/*"
-      "@app/storage": [
-        "libs/storage/src"
-      ],
-      "@app/storage/*": [
-        "libs/storage/src/*"
-      ]
+      "@app/common": ["libs/common/src"],
+      "@app/common/*": ["libs/common/src/*"],
+      "@app/notifications": ["libs/notifications/src"],
+      "@app/notifications/*": ["libs/notifications/src/*"],
+      "@app/storage": ["libs/storage/src"],
+      "@app/storage/*": ["libs/storage/src/*"]
     }
   }
 }
