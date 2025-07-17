@@ -1,5 +1,4 @@
 import { DbService } from '@app/common/db/db.service';
-import { employeePost } from '@app/common/db/enums/employee-post.enum';
 import { Injectable } from '@nestjs/common';
 import { In, MoreThan } from 'typeorm';
 
