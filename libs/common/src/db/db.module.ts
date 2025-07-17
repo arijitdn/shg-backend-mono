@@ -19,7 +19,7 @@ import { OrderEntity } from './entities/order.entity';
       CLFEntity,
       TRLMAdminEntity,
       ProductEntity,
-      NotificationEntity
+      NotificationEntity,
       OrderEntity,
     ]),
   ],

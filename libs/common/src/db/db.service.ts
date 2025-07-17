@@ -32,7 +32,8 @@ export class DbService {
     public readonly productRepo: Repository<ProductEntity>,
 
     @InjectRepository(NotificationEntity)
-    public readonly notificationRepo: Repository<NotificationEntity>
+    public readonly notificationRepo: Repository<NotificationEntity>,
+    
     @InjectRepository(OrderEntity)
     public readonly orderRepo: Repository<OrderEntity>,
   ) {}
