@@ -8,6 +8,7 @@ import { ShgModule } from './shg/shg.module';
 import { VoModule } from './vo/vo.module';
 import { ProductsModule } from './products/products.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
     ClfModule,
     ProductsModule,
     AnalyticsModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
