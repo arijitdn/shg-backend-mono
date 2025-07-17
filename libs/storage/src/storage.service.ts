@@ -6,7 +6,7 @@ import {
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class FileStorageService {
+export class StorageService {
   private s3: S3Client;
   private bucket: string;
   private publicUrl: string;

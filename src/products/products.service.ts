@@ -9,13 +9,13 @@ import { DbService } from '@app/common/db/db.service';
 import { ProductEntity } from '@app/common/db/entities';
 import { productType } from '@app/common/db/enums/product-type.enum';
 import { ProductStatus } from '@app/common/db/enums/product-status.enum';
-import { FileStorageService } from 'src/file-storage/file-storage.service';
+import { StorageService } from '@app/storage';
 
 @Injectable()
 export class ProductsService {
   constructor(
     private dbService: DbService,
-    private readonly fileStorageService: FileStorageService, // Assuming you have a file storage service for handling product images
+    private readonly storageService: StorageService,
   ) {}
 
   async create(
@@ -24,7 +24,7 @@ export class ProductsService {
   ) {
     let imageUrl: string | null = null;
     if (image) {
-      imageUrl = await this.fileStorageService.uploadFile(image);
+      imageUrl = await this.storageService.uploadFile(image);
     }
     const product = this.dbService.productRepo.create(
       Object.assign({}, createProductDto, { imageUrl }),
@@ -52,9 +52,8 @@ export class ProductsService {
     const product = await this.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
     if (image) {
-      if (product.imgUrl)
-        await this.fileStorageService.deleteFile(product.imgUrl);
-      product.imgUrl = await this.fileStorageService.uploadFile(image);
+      if (product.imgUrl) await this.storageService.deleteFile(product.imgUrl);
+      product.imgUrl = await this.storageService.uploadFile(image);
     }
     const updated = Object.assign(product, updateProductDto);
     const saved = await this.dbService.productRepo.save(updated);
@@ -65,7 +64,7 @@ export class ProductsService {
     const product = await this.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
     if (product.imgUrl) {
-      await this.fileStorageService.deleteFile(product.imgUrl);
+      await this.storageService.deleteFile(product.imgUrl);
     }
     const saved = await this.dbService.productRepo.remove(product);
     return saved;
