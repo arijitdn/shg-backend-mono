@@ -8,10 +8,17 @@ import { ShgModule } from './shg/shg.module';
 import { VoModule } from './vo/vo.module';
 import { ProductsModule } from './products/products.module';
 import { AnalyticsModule } from './analytics/analytics.module';
-import { FileStorageModule } from './file-storage/file-storage.module';
 
 @Module({
-  imports: [CoreModule, AuthModule, ShgModule, VoModule, ClfModule, ProductsModule, AnalyticsModule, FileStorageModule],
+  imports: [
+    CoreModule,
+    AuthModule,
+    ShgModule,
+    VoModule,
+    ClfModule,
+    ProductsModule,
+    AnalyticsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
