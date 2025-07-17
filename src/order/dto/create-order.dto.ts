@@ -78,7 +78,11 @@ export class CreateOrderDto {
 
   @IsOptional()
   @IsInt()
-  discount?: number;
+  discount?: number; // discountValue: can be flat or percent based on discountType
+
+  @ValidateIf((o) => o.discount !== undefined)
+  @IsString()
+  discountType?: 'flat' | 'percent'; // Required if discount is present
 
   @IsOptional()
   @IsString()

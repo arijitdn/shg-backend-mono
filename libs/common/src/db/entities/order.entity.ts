@@ -63,7 +63,10 @@ export class OrderEntity {
   originalPrice: number;
 
   @Column('float', { nullable: true })
-  discount?: number;
+  discount?: number; // discountValue: can be flat or percent based on discountType
+
+  @Column({ nullable: true })
+  discountType?: 'flat' | 'percent'; // 'flat' for rupees, 'percent' for percentage discount
 
   @Column({ default: 'Created' })
   status?: string;

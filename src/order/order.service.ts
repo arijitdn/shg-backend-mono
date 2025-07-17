@@ -12,11 +12,13 @@ export class OrderService {
   constructor(private readonly dbService: DbService) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    // Calculate orderPrice based on originalPrice and discount (percentage)
-    let { originalPrice, discount = 0 } = createOrderDto;
+    // Calculate orderPrice based on originalPrice and discount (flat or percent)
+    let { originalPrice, discount = 0, discountType } = createOrderDto;
     let orderPrice = originalPrice;
-    if (discount > 0) {
+    if (discount > 0 && discountType === 'percent') {
       orderPrice = originalPrice - (originalPrice * discount) / 100;
+    } else if (discount > 0 && discountType === 'flat') {
+      orderPrice = originalPrice - discount;
     }
     const order = this.dbService.orderRepo.create({
       ...createOrderDto,
@@ -28,6 +30,7 @@ export class OrderService {
       ...savedOrder,
       originalPrice: savedOrder.originalPrice,
       discount: savedOrder.discount,
+      discountType: savedOrder.discountType,
       orderPrice: savedOrder.orderPrice,
     };
   }
