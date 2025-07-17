@@ -24,6 +24,11 @@
       "@app/common/*": [
         "libs/common/src/*"
       ],
+      "@app/notifications": [
+        "libs/notifications/src"
+      ],
+      "@app/notifications/*": [
+        "libs/notifications/src/*"
       "@app/storage": [
         "libs/storage/src"
       ],
