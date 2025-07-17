@@ -29,6 +29,11 @@
       ],
       "@app/notifications/*": [
         "libs/notifications/src/*"
+      "@app/storage": [
+        "libs/storage/src"
+      ],
+      "@app/storage/*": [
+        "libs/storage/src/*"
       ]
     }
   }

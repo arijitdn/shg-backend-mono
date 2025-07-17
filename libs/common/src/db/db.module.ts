@@ -8,6 +8,7 @@ import { TRLMAdminEntity } from './entities/trlm-admin.entity';
 import { DbService } from './db.service';
 import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities/notifications.entitiy'
+import { OrderEntity } from './entities/order.entity';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { NotificationEntity } from './entities/notifications.entitiy'
       TRLMAdminEntity,
       ProductEntity,
       NotificationEntity
+      OrderEntity,
     ]),
   ],
   providers: [DbService],

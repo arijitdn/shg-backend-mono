@@ -1,4 +1,5 @@
 import { DbService } from '@app/common/db/db.service';
+import { employeePost } from '@app/common/db/enums/employee-post.enum';
 import { Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
 
@@ -79,6 +80,27 @@ export class AnalyticsService {
       byShg,
       byVo,
       byClf,
+    };
+  }
+  async getAdminStats(post?: string) {
+    const totalEmployees = await this.dbService.trlmRepo.count();
+
+    const totalPosts = await this.dbService.trlmRepo
+      .createQueryBuilder('admin')
+      .select('admin.post')
+      .distinct(true)
+      .getCount();
+
+    const employeeByPost = await this.dbService.trlmRepo
+      .createQueryBuilder('trlm')
+      .select('trlm.post', 'post')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('trlm.post');
+
+    return {
+      totalEmployees,
+      totalPosts,
+      employeeByPost,
     };
   }
 }

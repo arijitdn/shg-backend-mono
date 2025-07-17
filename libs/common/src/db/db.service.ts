@@ -8,6 +8,7 @@ import { CLFEntity } from './entities/clf.entity';
 import { TRLMAdminEntity } from './entities/trlm-admin.entity';
 import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities';
+import { OrderEntity } from './entities/order.entity';
 
 @Injectable()
 export class DbService {
@@ -32,6 +33,8 @@ export class DbService {
 
     @InjectRepository(NotificationEntity)
     public readonly notificationRepo: Repository<NotificationEntity>
+    @InjectRepository(OrderEntity)
+    public readonly orderRepo: Repository<OrderEntity>,
   ) {}
 
   
