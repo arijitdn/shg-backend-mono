@@ -9,17 +9,19 @@ import { VoModule } from './vo/vo.module';
 import { ProductsModule } from './products/products.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { OrderModule } from './order/order.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
     CoreModule,
     AuthModule,
     ShgModule,
-    VoModule,
+    VoModule,   
     ClfModule,
     ProductsModule,
     AnalyticsModule,
     OrderModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
