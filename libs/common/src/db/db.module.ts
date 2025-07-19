@@ -9,6 +9,7 @@ import { DbService } from './db.service';
 import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities/notifications.entitiy';
 import { OrderEntity } from './entities/order.entity';
+import { PostEntity } from './entities/posts.entity';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { OrderEntity } from './entities/order.entity';
       ProductEntity,
       NotificationEntity,
       OrderEntity,
+      PostEntity,
     ]),
   ],
   providers: [DbService],
