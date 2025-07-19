@@ -25,11 +25,20 @@ export class TRLMAdminEntity {
   @Column()
   password: string;
 
+  @Column()
+  designation: string;
+
+  @Column({ default: 'active' })
+  status: string; // or use an enum if you want
+
+  @Column({ type: 'date', nullable: true })
+  joinDate: Date;
+
+  @Column()
+  post: string; 
+
   @Column({ type: 'enum', enum: TRLMLevel })
   level: TRLMLevel;
-
-  @Column({ type: 'enum', enum: employeePost })
-  post: employeePost;
 
   @CreateDateColumn()
   createdAt: Date;
