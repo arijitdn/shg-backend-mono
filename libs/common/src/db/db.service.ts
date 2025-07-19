@@ -9,6 +9,7 @@ import { TRLMAdminEntity } from './entities/trlm-admin.entity';
 import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities';
 import { OrderEntity } from './entities/order.entity';
+import { PostEntity } from './entities/posts.entity';
 
 @Injectable()
 export class DbService {
@@ -32,9 +33,13 @@ export class DbService {
     public readonly productRepo: Repository<ProductEntity>,
 
     @InjectRepository(NotificationEntity)
-    public readonly notificationRepo: Repository<NotificationEntity>
+    public readonly notificationRepo: Repository<NotificationEntity>,
+    
     @InjectRepository(OrderEntity)
     public readonly orderRepo: Repository<OrderEntity>,
+
+    @InjectRepository(PostEntity)
+    public readonly postRepo: Repository<PostEntity>,
   ) {}
 
   
