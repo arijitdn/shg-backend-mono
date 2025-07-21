@@ -37,7 +37,7 @@ export class ProductEntity {
   @IsString()
   description: string;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('int')
   @IsNumber()
   @IsPositive()
   price: number;

@@ -57,17 +57,17 @@ export class OrderEntity {
   @CreateDateColumn({ type: 'timestamptz' })
   orderDate: Date;
 
-  @Column('float')
+  @Column('int')
   orderPrice: number;
 
-  @Column('float')
+  @Column('int')
   originalPrice: number;
 
   @Column('float', { nullable: true })
-  discount?: number; // discountValue: can be flat or percent based on discountType
+  discount?: number;
 
   @Column({ nullable: true })
-  discountType?: 'flat' | 'percent'; // 'flat' for rupees, 'percent' for percentage discount
+  discountType?: 'flat' | 'percent';
 
   @Column({
     type: 'enum',
