@@ -15,13 +15,7 @@ import {
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('products')
@@ -62,7 +56,7 @@ export class ProductsController {
     return this.productsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
   //@ApiBody({ type: UpdateProductDto })
@@ -84,7 +78,7 @@ export class ProductsController {
     return this.productsService.update(id, updateProductDto, image);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   @ApiOperation({ summary: 'Delete a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
   remove(@Param('id') id: string) {
@@ -105,18 +99,10 @@ export class ProductsController {
     return this.productsService.findProductsForCLF();
   }
 
-  @Patch(':id/vo-recommendation')
+  @Patch('recommend/:id')
   //@Roles(UserRole.VO)
   @ApiOperation({ summary: 'Recommend or reject a product by VO' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        recommend: { type: 'boolean' },
-      },
-    },
-  })
   recommendProduct(
     @Param('id') id: string,
     @Body() body: { recommend: boolean },
@@ -124,17 +110,9 @@ export class ProductsController {
     return this.productsService.recommendByVO(id, body.recommend);
   }
 
-  @Patch(':id/clf-approval')
+  @Patch('approve/:id')
   @ApiOperation({ summary: 'Approve or reject a product by CLF' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        approve: { type: 'boolean' },
-      },
-    },
-  })
   //@Roles(UserRole.CLF)
   approveProduct(@Param('id') id: string, @Body() body: { approve: boolean }) {
     return this.productsService.approveByCLF(id, body.approve);
