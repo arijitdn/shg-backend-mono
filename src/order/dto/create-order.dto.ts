@@ -7,8 +7,12 @@ import {
   ValidateNested,
   IsBoolean,
   IsInt,
+  isNotEmpty,
+  IsNotEmpty,
+  IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { OrderStatus } from '@app/common/db/enums/order-status';
 
 export class DeliveryAddressDto {
   @IsString()
@@ -47,18 +51,18 @@ export class CreateOrderDto {
 
   @IsString()
   productId: string;
+
   @ValidateIf((o) => !o.customerId)
   @IsOptional()
   @IsString()
   trlmId?: string;
 
   @ValidateIf((o) => !o.trlmId)
-  @IsOptional()
   @IsString()
   customerId?: string;
 
-  @ValidateIf((o) => !o.customerId)
-  @IsOptional()
+  @ValidateIf((o) => !o.trlmId)
+  @IsNotEmpty()
   @IsString()
   customerName?: string;
 
@@ -77,6 +81,26 @@ export class CreateOrderDto {
   originalPrice: number;
 
   @IsOptional()
+  @IsEnum(OrderStatus)
+  status?: OrderStatus;
+
+  @IsOptional()
+  @IsDateString()
+  confirmedAt?: string;
+
+  @IsOptional()
+  @IsDateString()
+  shippedAt?: string;
+
+  @IsOptional()
+  @IsDateString()
+  deliveredAt?: string;
+
+  @IsOptional()
+  @IsDateString()
+  cancelledAt?: string;
+
+  @IsOptional()
   @IsInt()
   discount?: number; // discountValue: can be flat or percent based on discountType
 
@@ -86,23 +110,27 @@ export class CreateOrderDto {
 
   @IsOptional()
   @IsString()
-  status?: string;
+  couponCode?: string;
 
   @IsOptional()
-  @IsBoolean()
-  isDispatched?: boolean;
+  @IsInt()
+  couponDiscount?: number;
 
-  @IsOptional()
-  @IsBoolean()
-  isDelivered?: boolean;
+  // @IsOptional()
+  // @IsBoolean()
+  // isDispatched?: boolean;
 
-  @IsOptional()
-  @IsBoolean()
-  isCancelled?: boolean;
+  // @IsOptional()
+  // @IsBoolean()
+  // isDelivered?: boolean;
 
-  @IsOptional()
-  @IsBoolean()
-  isReturn?: boolean;
+  // @IsOptional()
+  // @IsBoolean()
+  // isCancelled?: boolean;
+
+  // @IsOptional()
+  // @IsBoolean()
+  // isReturn?: boolean;
 
   @IsOptional()
   @IsString()

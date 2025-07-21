@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
 } from 'typeorm';
+import { OrderStatus } from '../enums/order-status';
 
 class DeliveryAddress {
   @Column()
@@ -68,24 +69,49 @@ export class OrderEntity {
   @Column({ nullable: true })
   discountType?: 'flat' | 'percent'; // 'flat' for rupees, 'percent' for percentage discount
 
-  @Column({ default: 'Created' })
-  status?: string;
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+    default: OrderStatus.CREATED,
+  })
+  status: OrderStatus;
 
-  @Column({ default: false })
-  isDispatched: boolean;
+  @Column({ type: 'timestamptz', nullable: true })
+  statusUpdatedAt?: Date;
 
-  @Column({ default: false })
-  isDelivered: boolean;
+  @Column({ type: 'timestamptz', nullable: true })
+  confirmedAt?: Date;
 
-  @Column({ default: false })
-  isCancelled: boolean;
+  @Column({ type: 'timestamptz', nullable: true })
+  shippedAt?: Date;
 
-  @Column({ default: false })
-  isReturn: boolean;
+  @Column({ type: 'timestamptz', nullable: true })
+  deliveredAt?: Date;
 
-  @Column({ nullable: true })
-  deliveryNotes?: string;
+  @Column({ type: 'timestamptz', nullable: true })
+  cancelledAt?: Date;
 
-  @Column((type) => DeliveryAddress)
-  deliveryAddress: DeliveryAddress;
+  // @Column({ default: false })
+  // isDispatched: boolean;
+
+  // @Column({ default: false })
+  // isDelivered: boolean;
+
+  // @Column({ default: false })
+  // isCancelled: boolean;
+
+  // @Column({ nullable: true })
+  // couponCode?: string;
+
+  // @Column({ nullable: true })
+  // couponDiscount?: number;
+
+  // @Column({ default: false })
+  // isReturn: boolean;
+
+  // @Column({ nullable: true })
+  // deliveryNotes?: string;
+
+  // @Column((type) => DeliveryAddress)
+  // deliveryAddress: DeliveryAddress;
 }

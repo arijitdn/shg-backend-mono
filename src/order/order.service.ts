@@ -6,6 +6,7 @@ import {
 import { CreateOrderDto } from './dto/create-order.dto';
 import { DbService } from '@app/common/db/db.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { OrderStatus } from '@app/common/db/enums/order-status';
 
 @Injectable()
 export class OrderService {
@@ -13,7 +14,7 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto) {
     // Calculate orderPrice based on originalPrice and discount (flat or percent)
-    let { originalPrice, discount = 0, discountType } = createOrderDto;
+    let { originalPrice, discount = 0, discountType, status } = createOrderDto;
     let orderPrice = originalPrice;
     if (discount > 0 && discountType === 'percent') {
       orderPrice = originalPrice - (originalPrice * discount) / 100;
@@ -23,16 +24,11 @@ export class OrderService {
     const order = this.dbService.orderRepo.create({
       ...createOrderDto,
       orderPrice,
-      status: 'Created',
+      status: status || OrderStatus.CREATED,
+      statusUpdatedAt: new Date(),
     });
     const savedOrder = await this.dbService.orderRepo.save(order);
-    return {
-      ...savedOrder,
-      originalPrice: savedOrder.originalPrice,
-      discount: savedOrder.discount,
-      discountType: savedOrder.discountType,
-      orderPrice: savedOrder.orderPrice,
-    };
+    return savedOrder;
   }
 
   async findAll() {
@@ -71,25 +67,19 @@ export class OrderService {
     return await this.dbService.orderRepo.find({ where: { customerId } });
   }
 
-  async updateOrderStatus(id: string, newStatus: string) {
+  async updateOrderStatus(id: string, newStatus: OrderStatus) {
     const order = await this.dbService.orderRepo.findOneBy({ orderId: id });
     if (!order) {
       throw new NotFoundException('Order not found');
     }
-    // Set all status booleans to false by default
-    let statusUpdate = {
-      isDispatched: false,
-      isDelivered: false,
-      isCancelled: false,
-      isReturn: false,
+    // Only update the status field
+    return await this.dbService.orderRepo.update(id, {
       status: newStatus,
-    };
-    // Set only the selected status to true
-    if (newStatus === 'isDispatched') statusUpdate.isDispatched = true;
-    if (newStatus === 'isDelivered') statusUpdate.isDelivered = true;
-    if (newStatus === 'isCancelled') statusUpdate.isCancelled = true;
-    if (newStatus === 'isReturn') statusUpdate.isReturn = true;
-    return await this.dbService.orderRepo.update(id, statusUpdate);
+      ...(newStatus === OrderStatus.CONFIRMED && { confirmedAt: new Date() }),
+      ...(newStatus === OrderStatus.SHIPPED && { shippedAt: new Date() }),
+      ...(newStatus === OrderStatus.DELIVERED && { deliveredAt: new Date() }),
+      ...(newStatus === OrderStatus.CANCELLED && { cancelledAt: new Date() }),
+    });
   }
 
   async cancelOrder(id: string) {
@@ -97,18 +87,14 @@ export class OrderService {
     if (!order) {
       throw new NotFoundException('Order not found');
     }
-
     // Only allow cancellation if order is a customer order
     if (!order.customerId) {
       throw new ForbiddenException('Only customer orders can be cancelled');
     }
-
     return await this.dbService.orderRepo.update(id, {
-      isCancelled: true,
-      isDispatched: false,
-      isDelivered: false,
-      isReturn: false,
-      status: 'isCancelled',
+      status: OrderStatus.CANCELLED,
+      statusUpdatedAt: new Date(),
+      cancelledAt: new Date(),
     });
   }
 }
