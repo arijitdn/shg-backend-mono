@@ -22,7 +22,7 @@ import { UpdatePostsDto } from './dto/update-post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createPostDto: CreatePostDto) {
     return this.postsService.create(createPostDto);
   }
@@ -37,12 +37,12 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   update(@Param('id') id: string, @Body() updatePostsDto: UpdatePostsDto) {
     return this.postsService.update(id, updatePostsDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
   }

@@ -22,7 +22,7 @@ import { UserRole } from '@app/common/db/enums/user-role.enum';
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
   }
@@ -42,7 +42,7 @@ export class EmployeesController {
     return this.employeesService.findByPost(post);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   update(
     @Param('id') id: string,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
@@ -50,7 +50,7 @@ export class EmployeesController {
     return this.employeesService.update(id, updateEmployeeDto);
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.employeesService.remove(id);
   }
