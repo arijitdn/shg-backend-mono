@@ -10,14 +10,12 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { JwtAuthGuard } from 'src/shg-auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/shg-auth/guards/roles-guard';
-import { Roles } from 'src/shg-auth/decorators/roles.decorator';
-import { UserRole } from '@app/common/db/enums/user-role.enum';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.NIC_ADMIN)
+import { UserRole } from '@app/common/db/enums/user-role.enum';
+import { UpdatePostsDto } from './dto/update-post.dto';
+
+// @UseGuards(JwtAuthGuard, RolesGuard)
+// @Roles(UserRole.NIC_ADMIN)
 @Controller('admin/posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -38,8 +36,8 @@ export class PostsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+  update(@Param('id') id: string, @Body() updatePostsDto: UpdatePostsDto) {
+    return this.postsService.update(id, updatePostsDto);
   }
 
   @Delete(':id')

@@ -16,8 +16,8 @@ import { RolesGuard } from 'src/shg-auth/guards/roles-guard';
 import { Roles } from 'src/shg-auth/decorators/roles.decorator';
 import { UserRole } from '@app/common/db/enums/user-role.enum';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.NIC_ADMIN)
+// @UseGuards(JwtAuthGuard, RolesGuard)
+// @Roles(UserRole.NIC_ADMIN)
 @Controller('admin/employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}

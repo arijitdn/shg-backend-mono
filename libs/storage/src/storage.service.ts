@@ -13,17 +13,16 @@ export class StorageService {
 
   constructor() {
     this.s3 = new S3Client({
-      endpoint: process.env.TIGRIS_ENDPOINT,
-      region: process.env.TIGRIS_REGION || 'us-east-1',
+      endpoint: process.env.AWS_ENDPOINT,
+      region: process.env.AWS_REGION || 'us-east-1',
       credentials: {
-        accessKeyId: process.env.TIGRIS_ACCESS_KEY!,
-        secretAccessKey: process.env.TIGRIS_SECRET_KEY!,
+        accessKeyId: process.env.AWS_ACCESS_KEY!,
+        secretAccessKey: process.env.AWS_SECRET_KEY!,
       },
       forcePathStyle: true,
     });
-    this.bucket = process.env.TIGRIS_BUCKET || 'product-images';
-    this.publicUrl =
-      process.env.TIGRIS_PUBLIC_URL || process.env.TIGRIS_ENDPOINT!;
+    this.bucket = process.env.AWS_BUCKET || 'product-images';
+    this.publicUrl = process.env.AWS_PUBLIC_URL || process.env.AWS_ENDPOINT!;
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
