@@ -1,5 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-import { NotificationType } from '@app/common/db/enums/notification-type.enum';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
+import { NotificationType } from '@app/db/enums/notification-type.enum';
 
 @Entity('notifications')
 export class NotificationEntity {

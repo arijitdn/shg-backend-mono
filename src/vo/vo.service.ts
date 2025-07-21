@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DbService } from '@app/common/db/db.service';
+import { DbService } from '@app/db/db.service';
 import { CreateVoDto } from './dto/create-vo.dto';
 import { UpdateVoDto } from './dto/update-vo.dto';
 

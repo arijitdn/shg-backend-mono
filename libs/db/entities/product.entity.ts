@@ -17,7 +17,7 @@ import { productType } from '../enums/product-type.enum';
 import { productCategory } from '../enums/product-category.enum';
 import { ProductStatus } from '../enums/product-status.enum';
 
-@Entity()
+@Entity({ name: 'products' })
 export class ProductEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

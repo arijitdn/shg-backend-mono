@@ -4,9 +4,9 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { DbService } from '@app/common/db/db.service';
+import { DbService } from '@app/db/db.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { OrderStatus } from '@app/common/db/enums/order-status';
+import { OrderStatus } from '@app/db/enums/order-status';
 
 @Injectable()
 export class OrderService {

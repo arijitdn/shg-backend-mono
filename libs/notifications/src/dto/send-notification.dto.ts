@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { NotificationType } from '@app/common/db/enums/notification-type.enum';
+import { NotificationType } from '@app/db/enums/notification-type.enum';
 
 export class SendNotificationDto {
   @IsEnum(NotificationType)

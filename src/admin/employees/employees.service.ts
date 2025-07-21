@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TRLMAdminEntity } from '@app/common/db/entities/trlm-admin.entity';
+import { TRLMAdminEntity } from '@app/db/entities/trlm-admin.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 

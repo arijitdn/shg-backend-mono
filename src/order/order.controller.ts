@@ -10,7 +10,7 @@ import {
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { OrderStatus } from '@app/common/db/enums/order-status';
+import { OrderStatus } from '@app/db/enums/order-status';
 
 @Controller('orders')
 export class OrderController {

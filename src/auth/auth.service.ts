@@ -8,8 +8,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { DbService } from '@app/common/db/db.service';
-import { CustomerEntity } from '@app/common/db/entities/customer.entity';
+import { DbService } from '@app/db/db.service';
+import { CustomerEntity } from '@app/db/entities/customer.entity';
 
 @Injectable()
 export class AuthService {

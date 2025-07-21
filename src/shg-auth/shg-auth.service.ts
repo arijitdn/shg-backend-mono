@@ -8,9 +8,9 @@ import { LoginDto } from './dto/login-member.dto';
 import { JwtService } from '@nestjs/jwt';
 import { createMemberDto } from './dto/create-member.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { UserEntity } from '@app/common/db/entities';
-import { DbService } from '@app/common/db/db.service';
-import { UserRole } from '@app/common/db/enums/user-role.enum';
+import { UserEntity } from '@app/db/entities';
+import { DbService } from '@app/db/db.service';
+import { UserRole } from '@app/db/enums/user-role.enum';
 import { AdminLoginDto } from './dto/login-admin.dto';
 import { ConfigService } from '@nestjs/config';
 

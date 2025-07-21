@@ -1,6 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { VOEntity } from './vo.entity';
-import { SHGEntity } from './shg.entity';
 
 @Entity({ name: 'clf' })
 export class CLFEntity {

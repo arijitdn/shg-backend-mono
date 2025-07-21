@@ -12,7 +12,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { OrderStatus } from '@app/common/db/enums/order-status';
+import { OrderStatus } from '@app/db/enums/order-status';
 
 export class DeliveryAddressDto {
   @IsString()

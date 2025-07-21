@@ -1,4 +1,4 @@
-import { DbService } from '@app/common/db/db.service';
+import { DbService } from '@app/db/db.service';
 import { Injectable } from '@nestjs/common';
 import { In, MoreThan } from 'typeorm';
 

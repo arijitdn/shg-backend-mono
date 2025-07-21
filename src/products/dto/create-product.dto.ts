@@ -1,5 +1,5 @@
-import { productCategory } from '@app/common/db/enums/product-category.enum';
-import { productType } from '@app/common/db/enums/product-type.enum';
+import { productCategory } from '@app/db/enums/product-category.enum';
+import { productType } from '@app/db/enums/product-type.enum';
 import { Type } from 'class-transformer';
 import {
   IsNotEmpty,

@@ -8,7 +8,7 @@ import {
 import { UserRole } from '../enums/user-role.enum';
 
 // SHG, VO, CLF
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

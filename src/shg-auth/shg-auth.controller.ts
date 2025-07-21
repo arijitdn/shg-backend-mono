@@ -5,7 +5,7 @@ import { LoginDto } from './dto/login-member.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { Roles } from './decorators/roles.decorator';
-import { UserRole } from '@app/common/db/enums/user-role.enum';
+import { UserRole } from '@app/db/enums/user-role.enum';
 import { RolesGuard } from './guards/roles-guard';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { AdminLoginDto } from './dto/login-admin.dto';

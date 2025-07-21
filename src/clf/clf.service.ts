@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClfDto } from './dto/create-clf.dto';
 import { UpdateClfDto } from './dto/update-clf.dto';
-import { DbService } from '@app/common/db/db.service';
+import { DbService } from '@app/db/db.service';
 
 @Injectable()
 export class ClfService {

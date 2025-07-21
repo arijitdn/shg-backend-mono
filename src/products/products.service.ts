@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { DbService } from '@app/common/db/db.service';
-import { ProductEntity } from '@app/common/db/entities';
-import { productType } from '@app/common/db/enums/product-type.enum';
-import { ProductStatus } from '@app/common/db/enums/product-status.enum';
+import { DbService } from '@app/db/db.service';
+import { ProductEntity } from '@app/db/entities';
+import { productType } from '@app/db/enums/product-type.enum';
+import { ProductStatus } from '@app/db/enums/product-status.enum';
 import { StorageService } from '@app/storage';
 
 @Injectable()

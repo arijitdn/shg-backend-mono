@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateShgDto } from './dto/create-shg.dto';
 import { UpdateShgDto } from './dto/update-shg.dto';
-import { DbService } from '@app/common/db/db.service';
+import { DbService } from '@app/db/db.service';
 
 @Injectable()
 export class ShgService {

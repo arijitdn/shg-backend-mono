@@ -1,4 +1,4 @@
-import { UserRole } from '@app/common/db/enums/user-role.enum';
+import { UserRole } from '@app/db/enums/user-role.enum';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import {
   CanActivate,

@@ -3,7 +3,7 @@ import { EmailService } from './transports/email/email.service';
 import { SmsService } from './transports/sms/sms.service';
 import { InAppService } from './transports/in-app/in-app.service';
 import { SendNotificationDto } from './dto/send-notification.dto';
-import { NotificationType } from '@app/common/db/enums/notification-type.enum';
+import { NotificationType } from '@app/db/enums/notification-type.enum';
 
 @Injectable()
 export class NotificationService {

@@ -11,7 +11,7 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 
-import { UserRole } from '@app/common/db/enums/user-role.enum';
+import { UserRole } from '@app/db/enums/user-role.enum';
 import { UpdatePostsDto } from './dto/update-post.dto';
 
 // @UseGuards(JwtAuthGuard, RolesGuard)

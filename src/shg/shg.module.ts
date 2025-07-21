@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ShgService } from './shg.service';
 import { ShgController } from './shg.controller';
-import { DbModule } from '@app/common/db';
+import { DbModule } from '@app/db';
 
 @Module({
   imports: [DbModule],
