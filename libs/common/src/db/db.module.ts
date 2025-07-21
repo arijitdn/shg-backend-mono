@@ -10,6 +10,7 @@ import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities/notifications.entity';
 import { OrderEntity } from './entities/order.entity';
 import { PostEntity } from './entities/posts.entity';
+import { CustomerEntity } from './entities/customer.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PostEntity } from './entities/posts.entity';
       NotificationEntity,
       OrderEntity,
       PostEntity,
+      CustomerEntity,
     ]),
   ],
   providers: [DbService],

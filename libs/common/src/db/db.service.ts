@@ -10,6 +10,7 @@ import { ProductEntity } from './entities';
 import { NotificationEntity } from './entities';
 import { OrderEntity } from './entities/order.entity';
 import { PostEntity } from './entities/posts.entity';
+import { CustomerEntity } from './entities/customer.entity';
 
 @Injectable()
 export class DbService {
@@ -40,5 +41,8 @@ export class DbService {
 
     @InjectRepository(PostEntity)
     public readonly postRepo: Repository<PostEntity>,
+
+    @InjectRepository(CustomerEntity)
+    public readonly customerRepo: Repository<CustomerEntity>,
   ) {}
 }
