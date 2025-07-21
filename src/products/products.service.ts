@@ -22,7 +22,7 @@ export class ProductsService {
     createProductDto: CreateProductDto,
     image?: Express.Multer.File,
   ) {
-    let imageUrl: string | null = null;
+    let imageUrl: string | undefined = undefined;
     if (image) {
       imageUrl = await this.storageService.uploadFile(image);
     }
@@ -52,8 +52,9 @@ export class ProductsService {
     const product = await this.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
     if (image) {
-      if (product.imgUrl) await this.storageService.deleteFile(product.imgUrl);
-      product.imgUrl = await this.storageService.uploadFile(image);
+      if (product.imageUrl)
+        await this.storageService.deleteFile(product.imageUrl);
+      product.imageUrl = await this.storageService.uploadFile(image);
     }
     const updated = Object.assign(product, updateProductDto);
     const saved = await this.dbService.productRepo.save(updated);
@@ -63,8 +64,8 @@ export class ProductsService {
   async remove(id: string): Promise<ProductEntity | null> {
     const product = await this.findOne(id);
     if (!product) throw new NotFoundException('Product not found');
-    if (product.imgUrl) {
-      await this.storageService.deleteFile(product.imgUrl);
+    if (product.imageUrl) {
+      await this.storageService.deleteFile(product.imageUrl);
     }
     const saved = await this.dbService.productRepo.remove(product);
     return saved;

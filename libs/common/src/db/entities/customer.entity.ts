@@ -5,16 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../enums/user-role.enum';
 
-// SHG, VO, CLF
-@Entity({ name: 'user' })
-export class UserEntity {
+@Entity({ name: 'customer' })
+export class CustomerEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ unique: true, nullable: false })
-  userId: string;
 
   @Column()
   name: string;
@@ -28,14 +23,23 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({ type: 'enum', enum: UserRole })
-  role: UserRole;
+  @Column()
+  address: string;
 
   @Column()
-  organizationId: string;
+  city: string;
 
   @Column()
-  organizationType: string;
+  state: string;
+
+  @Column()
+  zip: string;
+
+  @Column({ nullable: true })
+  landMark: string;
+
+  @Column({ nullable: true })
+  alternateAddress: string;
 
   @CreateDateColumn()
   createdAt: Date;

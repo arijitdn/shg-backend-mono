@@ -49,7 +49,7 @@ export class ProductEntity {
 
   @Column()
   @IsUrl()
-  imgUrl: string;
+  imageUrl: string;
 
   @Column()
   @IsString()
@@ -73,6 +73,10 @@ export class ProductEntity {
   @Column({ default: false })
   @IsBoolean()
   isApproved: boolean;
+
+  @Column({ default: false })
+  @IsBoolean()
+  isRejected: boolean;
 
   @Column({ nullable: true })
   verificationDate: Date;

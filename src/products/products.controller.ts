@@ -29,7 +29,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
+  @Post('create')
   @ApiOperation({ summary: 'Create a new product' })
   @ApiConsumes('multipart/form-data')
   //@ApiBody({ type: CreateProductDto })
@@ -39,7 +39,7 @@ export class ProductsController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
-          new FileTypeValidator({ fileType: /jpeg|jpg/ }),
+          new FileTypeValidator({ fileType: /^image\/.*/ }),
         ],
       }),
     )

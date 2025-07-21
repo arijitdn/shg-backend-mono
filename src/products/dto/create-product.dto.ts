@@ -1,5 +1,6 @@
 import { productCategory } from '@app/common/db/enums/product-category.enum';
 import { productType } from '@app/common/db/enums/product-type.enum';
+import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsString,
@@ -26,10 +27,12 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
+  @Type(() => Number)
   @IsNumber()
   @IsPositive()
   price: number;
 
+  @Type(() => Number)
   @IsNumber()
   @IsPositive()
   stock: number;
