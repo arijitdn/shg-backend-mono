@@ -79,7 +79,11 @@ export class ProductsService {
     return await this.dbService.productRepo.find({ where: { userId } });
   }
 
-  async recommendByVO(id: string, recommend: boolean): Promise<ProductEntity> {
+  async recommendByVO(
+    id: string,
+    recommend: boolean,
+    remarks?: string,
+  ): Promise<ProductEntity> {
     const product = await this.findOne(id);
 
     if (product.type !== productType.SINGLE) {
@@ -89,14 +93,22 @@ export class ProductsService {
     }
 
     product.isRecommended = recommend;
+    product.recommendationDate = new Date();
+
+    if (remarks) product.remarks = remarks;
 
     product.status = recommend
       ? ProductStatus.RECOMMENDED
       : ProductStatus.REJECTED;
+
     return this.dbService.productRepo.save(product);
   }
 
-  async approveByCLF(id: string, approve: boolean): Promise<ProductEntity> {
+  async approveByCLF(
+    id: string,
+    approve: boolean,
+    remarks?: string,
+  ): Promise<ProductEntity> {
     const product = await this.findOne(id);
 
     // Check if approval is valid based on type and recommendation
@@ -107,7 +119,10 @@ export class ProductsService {
     }
 
     product.isApproved = approve;
-    product.verificationDate = new Date();
+    product.isRecommended = false;
+    product.approvalDate = new Date();
+
+    if (remarks) product.remarks = remarks;
 
     product.status = approve ? ProductStatus.APPROVED : ProductStatus.REJECTED;
     return this.dbService.productRepo.save(product);
@@ -128,5 +143,50 @@ export class ProductsService {
         { type: productType.SINGLE, isRecommended: true },
       ],
     });
+  }
+
+  async reject(
+    id: string,
+    reject: boolean,
+    rejectedBy: string,
+    remarks?: string,
+  ): Promise<ProductEntity> {
+    const product = await this.findOne(id);
+    if (!product) throw new NotFoundException('Product not found');
+
+    product.isRejected = reject;
+    product.isRecommended = false;
+    product.isApproved = false;
+    product.rejectionDate = new Date();
+    product.rejectedBy = rejectedBy;
+
+    if (remarks) product.remarks = remarks;
+
+    product.status = reject ? ProductStatus.REJECTED : ProductStatus.PENDING;
+
+    return this.dbService.productRepo.save(product);
+  }
+
+  async reapplyForReview(
+    id: string,
+    updateProductDto: UpdateProductDto,
+    image?: Express.Multer.File,
+  ) {
+    const product = await this.findOne(id);
+    if (!product) throw new NotFoundException('Product is not found!');
+
+    if (image) {
+      if (product.imageUrl)
+        await this.storageService.deleteFile(product.imageUrl);
+      product.imageUrl = await this.storageService.uploadFile(image);
+    }
+
+    product.status = ProductStatus.PENDING;
+    product.isRejected = false;
+    product.isRecommended = false;
+
+    const updated = Object.assign(product, updateProductDto);
+    const saved = await this.dbService.productRepo.save(updated);
+    return saved;
   }
 }

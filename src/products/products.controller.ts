@@ -105,16 +105,55 @@ export class ProductsController {
   @ApiParam({ name: 'id', description: 'Product ID' })
   recommendProduct(
     @Param('id') id: string,
-    @Body() body: { recommend: boolean },
+    @Body() body: { recommend: boolean; remarks?: string },
   ) {
-    return this.productsService.recommendByVO(id, body.recommend);
+    return this.productsService.recommendByVO(id, body.recommend, body.remarks);
   }
 
   @Patch('approve/:id')
   @ApiOperation({ summary: 'Approve or reject a product by CLF' })
   @ApiParam({ name: 'id', description: 'Product ID' })
   //@Roles(UserRole.CLF)
-  approveProduct(@Param('id') id: string, @Body() body: { approve: boolean }) {
-    return this.productsService.approveByCLF(id, body.approve);
+  approveProduct(
+    @Param('id') id: string,
+    @Body() body: { approve: boolean; remarks?: string },
+  ) {
+    return this.productsService.approveByCLF(id, body.approve, body.remarks);
+  }
+
+  @Patch('reject/:id')
+  @ApiOperation({ summary: 'Reject a product by CLF' })
+  @ApiParam({ name: 'id', description: 'Product ID' })
+  //@Roles(UserRole.CLF)
+  rejectProduct(
+    @Param('id') id: string,
+    @Body() body: { reject: boolean; rejectedBy: string; remarks?: string },
+  ) {
+    return this.productsService.reject(
+      id,
+      body.reject,
+      body.rejectedBy,
+      body.remarks,
+    );
+  }
+
+  @Patch('reapply/:id')
+  @ApiOperation({ summary: 'Reapply a rejected product' })
+  @UseInterceptors(FileInterceptor('image'))
+  reapplyProduct(
+    @Param('id') id: string,
+    @Body() updateProductDto: UpdateProductDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: /jpeg|jpg/ }),
+          new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+        ],
+        fileIsRequired: false,
+      }),
+    )
+    image?: Express.Multer.File,
+  ) {
+    return this.productsService.reapplyForReview(id, updateProductDto, image);
   }
 }

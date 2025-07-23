@@ -4,6 +4,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { Injectable } from '@nestjs/common';
+import { createId } from '@paralleldrive/cuid2';
 
 @Injectable()
 export class StorageService {
@@ -26,16 +27,20 @@ export class StorageService {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
-    const sanitizedFileName = file.originalname.replace(
-      /[^a-zA-Z0-9_.-]/g,
-      '_',
-    );
+    const sanitizedFileName =
+      createId() +
+      '-' +
+      file.originalname
+        .replace(/[^a-zA-Z0-9_.-]/g, '_')
+        .replace(/_{2,}/g, '_')
+        .replace(' ', '_');
+
     const command = new PutObjectCommand({
       Bucket: this.bucket,
       Key: sanitizedFileName,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: 'public-read', // or remove for private files
+      ACL: 'public-read',
     });
 
     await this.s3.send(command);

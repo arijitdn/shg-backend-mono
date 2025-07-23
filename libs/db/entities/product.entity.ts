@@ -66,20 +66,35 @@ export class ProductEntity {
   })
   status: ProductStatus;
 
+  // RECOMMENDATION FIELDS
   @Column({ default: false, nullable: true }) // Enforce Conditional Validation in DTO
   @IsBoolean()
   isRecommended: boolean;
 
+  @Column({ nullable: true })
+  recommendationDate: Date;
+
+  // APPROVAL FIELDS
   @Column({ default: false })
   @IsBoolean()
   isApproved: boolean;
 
+  @Column({ nullable: true })
+  approvalDate: Date;
+
+  // REJECTION FIELDS
   @Column({ default: false })
   @IsBoolean()
   isRejected: boolean;
 
   @Column({ nullable: true })
-  verificationDate: Date;
+  rejectedBy: string;
+
+  @Column({ nullable: true })
+  rejectionDate: Date;
+
+  @Column({ nullable: true })
+  remarks: string;
 
   @CreateDateColumn()
   createdAt: Date;
