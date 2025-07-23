@@ -173,7 +173,7 @@ export class ProductsService {
     image?: Express.Multer.File,
   ) {
     const product = await this.findOne(id);
-    if (!product) throw new NotFoundException('Product is not found!');
+    if (!product) throw new NotFoundException('Product is not found');
 
     if (image) {
       if (product.imageUrl)
