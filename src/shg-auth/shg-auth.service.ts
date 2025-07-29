@@ -46,10 +46,11 @@ export class ShgAuthService {
     const hash = await this.hashPassword(createAdminDto.password);
     const user = this.dbService.userRepo.create({
       ...createAdminDto,
+      userId: 'A' + Math.floor(1000 + Math.random() * 9000).toString(),
       password: hash,
     });
     await this.dbService.userRepo.save(user);
-    return { message: 'Admin created successfully' };
+    return { message: `Admin created successfully`, userId: user.userId };
   }
 
   async login(loginDto: LoginDto) {

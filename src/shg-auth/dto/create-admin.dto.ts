@@ -13,14 +13,14 @@ export class CreateAdminDto {
   @IsNotEmpty()
   name: string;
 
-  @IsPhoneNumber()
+  @IsString()
   phone: string;
 
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @MinLength(8)
+  @MinLength(6)
   @IsNotEmpty()
   password: string;
 
