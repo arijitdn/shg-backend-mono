@@ -8,7 +8,7 @@ export class VoService {
   constructor(private dbService: DbService) {}
 
   async create(createVoDto: CreateVoDto) {
-    const groupId = `VO${Date.now().toString(36)}`;
+    const groupId = `VO${Math.floor(1000 + Math.random() * 9000).toString()}`;
     const vo = this.dbService.voRepo.create({
       ...createVoDto,
       groupId,

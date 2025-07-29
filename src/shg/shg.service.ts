@@ -8,7 +8,7 @@ export class ShgService {
   constructor(private dbService: DbService) {}
 
   async create(createShgDto: CreateShgDto) {
-    const groupId = `SHG${Date.now().toString(36)}`;
+    const groupId = `SHG${Math.floor(1000 + Math.random() * 9000).toString()}`;
     const shg = this.dbService.shgRepo.create({ ...createShgDto, groupId });
     return await this.dbService.shgRepo.save(shg);
   }

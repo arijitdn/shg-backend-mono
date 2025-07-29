@@ -8,7 +8,7 @@ export class ClfService {
   constructor(private dbService: DbService) {}
 
   async create(createClfDto: CreateClfDto) {
-    const groupId = `CLF${Date.now().toString(36)}`;
+    const groupId = `CLF${Math.floor(1000 + Math.random() * 9000).toString()}`;
     const clf = this.dbService.clfRepo.create({
       ...createClfDto,
       groupId,
