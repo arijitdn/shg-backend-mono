@@ -122,6 +122,29 @@ export class ShgAuthService {
     }
   }
 
+  async getDetails(userId: string, shgId: string) {
+    const user = await this.dbService.userRepo.findOneBy({
+      userId,
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const shg = await this.dbService.shgRepo.findOneBy({
+      groupId: shgId,
+    });
+
+    if (!shg) {
+      throw new UnauthorizedException('SHG not found');
+    }
+
+    return {
+      username: user.name,
+      shgName: shg.name,
+    };
+  }
+
   async refreshToken(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {

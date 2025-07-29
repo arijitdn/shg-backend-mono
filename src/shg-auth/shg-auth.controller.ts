@@ -34,6 +34,13 @@ export class ShgAuthController {
     return user;
   }
 
+  @Get('get-details')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.NIC, UserRole.SHG, UserRole.VO, UserRole.CLF)
+  getDetails(userId: string, shgId: string) {
+    return this.authService.getDetails(userId, shgId);
+  }
+
   @Post('create-admin')
   @Roles(UserRole.NIC)
   @UseGuards(JwtAuthGuard, RolesGuard)
