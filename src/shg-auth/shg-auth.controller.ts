@@ -42,8 +42,8 @@ export class ShgAuthController {
   }
 
   @Post('create-admin')
-  @Roles(UserRole.NIC)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(UserRole.NIC)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
   createAdmin(@Body() createAdminDto: CreateAdminDto) {
     return this.authService.createAdmin(createAdminDto);
   }

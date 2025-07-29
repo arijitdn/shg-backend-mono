@@ -1,4 +1,15 @@
-import { IsString, IsEmail, IsOptional, IsDateString } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsDateString,
+  IsEnum,
+} from 'class-validator';
+
+export enum TRLMLevel {
+  DMMU = 'DMMU',
+  BMMU = 'BMMU',
+}
 
 export class CreateEmployeeDto {
   @IsString()
@@ -11,16 +22,22 @@ export class CreateEmployeeDto {
   phone: string;
 
   @IsString()
+  password: string;
+
+  @IsString()
   designation: string;
 
   @IsString()
-  post: string;
+  postId: string;
+
+  @IsEnum(TRLMLevel)
+  level: TRLMLevel;
 
   @IsOptional()
   @IsString()
-  status?: string; // optional, defaults to 'active'
+  status?: string;
 
   @IsOptional()
   @IsDateString()
-  joinDate?: Date;
+  joinDate?: string;
 }

@@ -5,7 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TRLMLevel } from '../enums/trlm-level.enum';
+
+export enum TRLMLevel {
+  DMMU = 'DMMU',
+  BMMU = 'BMMU',
+}
 
 @Entity({ name: 'trlm' })
 export class TRLMAdminEntity {
@@ -15,7 +19,7 @@ export class TRLMAdminEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -28,15 +32,19 @@ export class TRLMAdminEntity {
   designation: string;
 
   @Column({ default: 'active' })
-  status: string; // or use an enum if you want
+  status: string;
 
   @Column({ type: 'date', nullable: true })
   joinDate: Date;
 
   @Column()
-  post: string;
+  postId: string;
 
-  @Column({ type: 'enum', enum: TRLMLevel })
+  @Column({
+    type: 'enum',
+    enum: TRLMLevel,
+    default: TRLMLevel.DMMU,
+  })
   level: TRLMLevel;
 
   @CreateDateColumn()
