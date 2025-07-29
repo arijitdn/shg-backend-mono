@@ -1,9 +1,24 @@
-import { IsPhoneNumber, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class LoginDto {
-  @IsPhoneNumber()
-  phone: string;
+  @IsOptional()
+  @IsString()
+  userId: string;
 
+  @IsOptional()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
   @MinLength(6)
   password: string;
+
+  @IsNotEmpty()
+  role: 'SHG' | 'VO' | 'BMMU' | 'DMMU' | 'NIC';
 }

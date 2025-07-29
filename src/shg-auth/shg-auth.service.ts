@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -32,7 +33,7 @@ export class ShgAuthService {
     const user = this.dbService.userRepo.create({
       ...dto,
       password: hash,
-      role: UserRole.SHG_MEMBER,
+      role: UserRole.SHG,
     });
     await this.dbService.userRepo.save(user);
     return { message: 'Member created successfully' };
@@ -52,64 +53,74 @@ export class ShgAuthService {
     return { message: 'Admin created successfully' };
   }
 
-  async loginMember(loginDto: LoginDto) {
-    const user = await this.dbService.userRepo.findOneBy({
-      phone: loginDto.phone,
-    });
+  async login(loginDto: LoginDto) {
+    const { userId, password: providedPassword, role } = loginDto;
 
-    if (
-      !user ||
-      ![UserRole.SHG_MEMBER, UserRole.VO_MEMBER, UserRole.CLF_MEMBER].includes(
-        user.role,
-      )
-    ) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (['SHG', 'VO', 'CLF'].includes(role)) {
+      if (!userId) {
+        throw new BadRequestException(
+          'Please provide a valid User ID to login',
+        );
+      }
+
+      const user = await this.dbService.userRepo.findOneBy({
+        userId,
+        role: role as UserRole,
+      });
+
+      if (!user) throw new UnauthorizedException('Invalid credentials');
+
+      const isValidPassword = await this.verifyPassword(
+        providedPassword,
+        user.password,
+      );
+
+      if (!isValidPassword)
+        throw new UnauthorizedException('Invalid credentials');
+
+      const tokens = this.generateTokens(user);
+
+      const { password, ...userData } = user;
+
+      return {
+        ...tokens,
+        user: userData,
+      };
+    } else {
+      const { email, password: providedPassword, role } = loginDto;
+
+      if (['BMMU', 'DMMU', 'NIC'].includes(role)) {
+        if (!email) {
+          throw new BadRequestException(
+            'Please provide a valid email address to login',
+          );
+        }
+
+        const user = await this.dbService.userRepo.findOneBy({
+          userId,
+          role: role as UserRole,
+        });
+
+        if (!user) throw new UnauthorizedException('Invalid credentials');
+
+        const isValidPassword = await this.verifyPassword(
+          providedPassword,
+          user.password,
+        );
+
+        if (!isValidPassword)
+          throw new UnauthorizedException('Invalid credentials');
+
+        const tokens = this.generateTokens(user);
+
+        const { password, ...userData } = user;
+
+        return {
+          ...tokens,
+          user: userData,
+        };
+      }
     }
-
-    const valid = await this.verifyPassword(loginDto.password, user.password);
-    if (!valid) throw new UnauthorizedException('Invalid credentials');
-    const tokens = this.generateTokens(user);
-    return {
-      ...tokens,
-      user: {
-        userId: user.userId,
-        name: user.name,
-        phone: user.phone,
-        role: user.role,
-      },
-    };
-  }
-  async loginAdmin(adminLoginDto: AdminLoginDto) {
-    const user = await this.dbService.userRepo.findOneBy({
-      phone: adminLoginDto.phone,
-      email: adminLoginDto.email,
-    });
-
-    if (
-      !user ||
-      ![UserRole.BMMU_ADMIN, UserRole.DMMU_ADMIN, UserRole.NIC_ADMIN].includes(
-        user.role,
-      )
-    ) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const valid = await this.verifyPassword(
-      adminLoginDto.password,
-      user.password,
-    );
-    if (!valid) throw new UnauthorizedException('Invalid credentials');
-    const tokens = this.generateTokens(user);
-    return {
-      ...tokens,
-      user: {
-        userId: user.userId,
-        name: user.name,
-        phone: user.phone,
-        email: user.email,
-        role: user.role,
-      },
-    };
   }
 
   async refreshToken(refreshToken: string) {

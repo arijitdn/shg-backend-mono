@@ -10,6 +10,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { DbService } from '@app/db/db.service';
 import { CustomerEntity } from '@app/db/entities/customer.entity';
+import { GetCustomerDto } from './dto/get-customer.dto';
 
 @Injectable()
 export class AuthService {
@@ -56,6 +57,17 @@ export class AuthService {
         email: customer.email,
       },
     };
+  }
+
+  async getProfileById(getCustomerDto: GetCustomerDto) {
+    const userData = await this.dbService.userRepo.findOneBy({
+      id: getCustomerDto.userId,
+    });
+    if (!userData) throw new UnauthorizedException('User not found');
+
+    const { password, ...user } = userData;
+
+    return user;
   }
 
   private async hashPassword(pw: string): Promise<string> {

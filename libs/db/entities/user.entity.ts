@@ -31,11 +31,8 @@ export class UserEntity {
   @Column({ type: 'enum', enum: UserRole })
   role: UserRole;
 
-  @Column()
+  @Column({ nullable: true })
   organizationId: string;
-
-  @Column()
-  organizationType: string;
 
   @CreateDateColumn()
   createdAt: Date;

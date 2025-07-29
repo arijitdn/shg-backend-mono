@@ -23,7 +23,4 @@ export class createMemberDto {
 
   @IsString()
   organizationId?: string;
-
-  @IsString()
-  organizationType?: string;
 }
