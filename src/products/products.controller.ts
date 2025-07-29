@@ -11,12 +11,17 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from 'src/shg-auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/shg-auth/guards/roles-guard';
+import { Roles } from 'src/shg-auth/decorators/roles.decorator';
+import { UserRole } from '@app/db/enums/user-role.enum';
 
 @ApiTags('products')
 @Controller('products')
@@ -100,31 +105,45 @@ export class ProductsController {
   }
 
   @Patch('recommend/:id')
-  //@Roles(UserRole.VO)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.VO)
   @ApiOperation({ summary: 'Recommend or reject a product by VO' })
   @ApiParam({ name: 'id', description: 'Product ID' })
   recommendProduct(
     @Param('id') id: string,
-    @Body() body: { recommend: boolean; remarks?: string },
+    @Body()
+    body: { recommend: boolean; remarks?: string; recommendedBy: string },
   ) {
-    return this.productsService.recommendByVO(id, body.recommend, body.remarks);
+    return this.productsService.recommendByVO(
+      id,
+      body.recommend,
+      body.remarks,
+      body.recommendedBy,
+    );
   }
 
   @Patch('approve/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.CLF)
   @ApiOperation({ summary: 'Approve or reject a product by CLF' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  //@Roles(UserRole.CLF)
   approveProduct(
     @Param('id') id: string,
-    @Body() body: { approve: boolean; remarks?: string },
+    @Body() body: { approve: boolean; remarks?: string; approvedBy?: string },
   ) {
-    return this.productsService.approveByCLF(id, body.approve, body.remarks);
+    return this.productsService.approveByCLF(
+      id,
+      body.approve,
+      body.remarks,
+      body.approvedBy,
+    );
   }
 
   @Patch('reject/:id')
-  @ApiOperation({ summary: 'Reject a product by CLF' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.VO, UserRole.CLF)
+  @ApiOperation({ summary: 'Reject a product' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  //@Roles(UserRole.CLF)
   rejectProduct(
     @Param('id') id: string,
     @Body() body: { reject: boolean; rejectedBy: string; remarks?: string },

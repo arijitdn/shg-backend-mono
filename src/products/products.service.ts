@@ -83,17 +83,22 @@ export class ProductsService {
     id: string,
     recommend: boolean,
     remarks?: string,
+    recommendedBy?: string,
   ): Promise<ProductEntity> {
     const product = await this.findOne(id);
 
     if (product.type !== productType.SINGLE) {
       throw new BadRequestException(
-        'Only SINGLE type products can be recommended by VO',
+        'Only Individual products can be recommended by VO',
       );
     }
 
     product.isRecommended = recommend;
     product.recommendationDate = new Date();
+
+    if (recommendedBy !== undefined) {
+      product.recommendedBy = recommendedBy;
+    }
 
     if (remarks) product.remarks = remarks;
 
@@ -108,6 +113,7 @@ export class ProductsService {
     id: string,
     approve: boolean,
     remarks?: string,
+    approvedBy?: string,
   ): Promise<ProductEntity> {
     const product = await this.findOne(id);
 
@@ -121,6 +127,10 @@ export class ProductsService {
     product.isApproved = approve;
     product.isRecommended = false;
     product.approvalDate = new Date();
+
+    if (approvedBy !== undefined) {
+      product.approvedBy = approvedBy;
+    }
 
     if (remarks) product.remarks = remarks;
 

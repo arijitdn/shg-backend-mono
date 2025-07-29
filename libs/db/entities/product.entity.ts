@@ -72,12 +72,18 @@ export class ProductEntity {
   isRecommended: boolean;
 
   @Column({ nullable: true })
+  recommendedBy: string;
+
+  @Column({ nullable: true })
   recommendationDate: Date;
 
   // APPROVAL FIELDS
   @Column({ default: false })
   @IsBoolean()
   isApproved: boolean;
+
+  @Column({ nullable: true })
+  approvedBy: string;
 
   @Column({ nullable: true })
   approvalDate: Date;
