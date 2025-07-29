@@ -33,7 +33,6 @@ export class ShgAuthService {
     const user = this.dbService.userRepo.create({
       ...dto,
       password: hash,
-      role: UserRole.SHG,
     });
     await this.dbService.userRepo.save(user);
     return { message: 'Member created successfully' };
@@ -42,7 +41,7 @@ export class ShgAuthService {
     const exists = await this.dbService.userRepo.findOneBy({
       email: createAdminDto.email,
     });
-    if (exists) throw new ConflictException('email already in use');
+    if (exists) throw new ConflictException('Email already in use');
 
     const hash = await this.hashPassword(createAdminDto.password);
     const user = this.dbService.userRepo.create({
