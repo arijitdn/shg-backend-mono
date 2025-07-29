@@ -9,7 +9,7 @@ import { LoginDto } from './dto/login-member.dto';
 import { JwtService } from '@nestjs/jwt';
 import { createMemberDto } from './dto/create-member.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
-import { UserEntity } from '@app/db/entities';
+import { TRLMAdminEntity, TRLMLevel, UserEntity } from '@app/db/entities';
 import { DbService } from '@app/db/db.service';
 import { UserRole } from '@app/db/enums/user-role.enum';
 import { AdminLoginDto } from './dto/login-admin.dto';
@@ -38,19 +38,19 @@ export class ShgAuthService {
     return { message: 'Member created successfully' };
   }
   async createAdmin(createAdminDto: CreateAdminDto) {
-    const exists = await this.dbService.userRepo.findOneBy({
+    const exists = await this.dbService.trlmRepo.findOneBy({
       email: createAdminDto.email,
     });
     if (exists) throw new ConflictException('Email already in use');
 
     const hash = await this.hashPassword(createAdminDto.password);
-    const user = this.dbService.userRepo.create({
+    const user = this.dbService.trlmRepo.create({
       ...createAdminDto,
-      userId: 'A' + Math.floor(1000 + Math.random() * 9000).toString(),
+      level: createAdminDto.role,
       password: hash,
     });
-    await this.dbService.userRepo.save(user);
-    return { message: `Admin created successfully`, userId: user.userId };
+    await this.dbService.trlmRepo.save(user);
+    return { message: `TRLM employee created successfully` };
   }
 
   async login(loginDto: LoginDto) {
@@ -96,9 +96,9 @@ export class ShgAuthService {
           );
         }
 
-        const user = await this.dbService.userRepo.findOneBy({
-          userId,
-          role: role as UserRole,
+        const user = await this.dbService.trlmRepo.findOneBy({
+          email,
+          level: role as TRLMLevel,
         });
 
         if (!user) throw new UnauthorizedException('Invalid credentials');
@@ -190,23 +190,34 @@ export class ShgAuthService {
     return bcrypt.compare(raw, hash);
   }
 
-  private generateTokens(user: UserEntity) {
+  private generateTokens(user: UserEntity | TRLMAdminEntity): {
+    accessToken: string;
+    refreshToken: string;
+  } {
     return {
       accessToken: this.generateAccessToken(user),
       refreshToken: this.generateRefreshToken(user),
     };
   }
 
-  private generateAccessToken(user: UserEntity): string {
-    const payload = { sub: user.id, role: user.role, phone: user.phone };
+  private generateAccessToken(user: UserEntity | TRLMAdminEntity): string {
+    const payload: any = { sub: user.id };
+    if ('role' in user) {
+      payload.role = user.role;
+    } else if ('level' in user) {
+      payload.role = user.level;
+    }
+    if ('phone' in user) {
+      payload.phone = user.phone;
+    }
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
       expiresIn: this.configService.get('JWT_EXPIRY') || '15m',
     });
   }
 
-  private generateRefreshToken(user: UserEntity): string {
-    const payload = { sub: user.id };
+  private generateRefreshToken(user: UserEntity | TRLMAdminEntity): string {
+    const payload: any = { sub: user.id };
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
       expiresIn: this.configService.get('JWT_REFRESH_EXPIRY') || '7d',

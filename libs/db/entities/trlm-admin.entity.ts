@@ -9,6 +9,7 @@ import {
 export enum TRLMLevel {
   DMMU = 'DMMU',
   BMMU = 'BMMU',
+  NIC = 'NIC',
 }
 
 @Entity({ name: 'trlm' })
@@ -28,7 +29,7 @@ export class TRLMAdminEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   designation: string;
 
   @Column({ default: 'active' })
@@ -37,7 +38,7 @@ export class TRLMAdminEntity {
   @Column({ type: 'date', nullable: true })
   joinDate: Date;
 
-  @Column()
+  @Column({ nullable: true })
   postId: string;
 
   @Column({

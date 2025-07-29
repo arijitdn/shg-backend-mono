@@ -1,3 +1,4 @@
+import { TRLMLevel } from '@app/db/entities';
 import { UserRole } from '@app/db/enums/user-role.enum';
 import {
   IsEmail,
@@ -24,7 +25,7 @@ export class CreateAdminDto {
   @IsNotEmpty()
   password: string;
 
-  @IsEnum(UserRole)
+  @IsEnum(TRLMLevel)
   @IsNotEmpty()
-  role: UserRole;
+  role: TRLMLevel;
 }
