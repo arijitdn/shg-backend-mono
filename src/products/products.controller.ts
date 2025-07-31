@@ -18,9 +18,9 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/shg-auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/shg-auth/guards/roles-guard';
-import { Roles } from 'src/shg-auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/org-auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/org-auth/guards/roles-guard';
+import { Roles } from 'src/org-auth/decorators/roles.decorator';
 import { UserRole } from '@app/db/enums/user-role.enum';
 
 @ApiTags('products')

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ShgAuthService } from './shg-auth.service';
-import { createMemberDto } from './dto/create-member.dto';
+import { OrgAuthService } from './org-auth.service';
+import { CreateMemberDto } from './dto/create-member.dto';
 import { LoginDto } from './dto/login-member.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
@@ -9,12 +9,12 @@ import { UserRole } from '@app/db/enums/user-role.enum';
 import { RolesGuard } from './guards/roles-guard';
 import { CreateAdminDto } from './dto/create-admin.dto';
 
-@Controller('shg-auth')
-export class ShgAuthController {
-  constructor(private authService: ShgAuthService) {}
+@Controller('org-auth')
+export class OrgAuthController {
+  constructor(private authService: OrgAuthService) {}
 
   @Post('create-member')
-  register(@Body() createMemberDto: createMemberDto) {
+  register(@Body() createMemberDto: CreateMemberDto) {
     return this.authService.createMember(createMemberDto);
   }
 

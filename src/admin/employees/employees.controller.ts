@@ -11,9 +11,9 @@ import {
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { JwtAuthGuard } from 'src/shg-auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/shg-auth/guards/roles-guard';
-import { Roles } from 'src/shg-auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/org-auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/org-auth/guards/roles-guard';
+import { Roles } from 'src/org-auth/decorators/roles.decorator';
 import { UserRole } from '@app/db/enums/user-role.enum';
 
 // @UseGuards(JwtAuthGuard, RolesGuard)

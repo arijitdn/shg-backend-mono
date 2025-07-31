@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ShgAuthController } from './shg-auth.controller';
-import { ShgAuthService } from './shg-auth.service';
+import { OrgAuthController } from './org-auth.controller';
+import { OrgAuthService } from './org-auth.service';
 import { DbModule } from '@app/db';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RolesGuard } from './guards/roles-guard';
@@ -9,8 +9,8 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [DbModule, PassportModule, JwtModule],
-  controllers: [ShgAuthController],
-  providers: [ShgAuthService, JwtStrategy, RolesGuard],
-  exports: [ShgAuthService, RolesGuard],
+  controllers: [OrgAuthController],
+  providers: [OrgAuthService, JwtStrategy, RolesGuard],
+  exports: [OrgAuthService, RolesGuard],
 })
-export class ShgAuthModule {}
+export class OrgAuthModule {}

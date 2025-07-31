@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ShgAuthModule } from './shg-auth/shg-auth.module';
+import { OrgAuthModule } from './org-auth/org-auth.module';
 import { ClfModule } from './clf/clf.module';
 import { CoreModule } from '@app/common/core';
 import { ShgModule } from './shg/shg.module';
@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     CoreModule,
-    ShgAuthModule,
+    OrgAuthModule,
     AuthModule,
     ShgModule,
     VoModule,

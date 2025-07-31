@@ -7,7 +7,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login-member.dto';
 import { JwtService } from '@nestjs/jwt';
-import { createMemberDto } from './dto/create-member.dto';
+import { CreateMemberDto } from './dto/create-member.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { TRLMAdminEntity, TRLMLevel, UserEntity } from '@app/db/entities';
 import { DbService } from '@app/db/db.service';
@@ -16,14 +16,14 @@ import { AdminLoginDto } from './dto/login-admin.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class ShgAuthService {
+export class OrgAuthService {
   constructor(
     private readonly dbService: DbService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 
-  async createMember(dto: createMemberDto) {
+  async createMember(dto: CreateMemberDto) {
     const exists = await this.dbService.userRepo.findOneBy({
       phone: dto.phone,
     });
@@ -173,7 +173,7 @@ export class ShgAuthService {
     return result;
   }
 
-  async update(id: string, dto: Partial<createMemberDto>) {
+  async update(id: string, dto: Partial<CreateMemberDto>) {
     return await this.dbService.userRepo.update(id, dto);
   }
 
