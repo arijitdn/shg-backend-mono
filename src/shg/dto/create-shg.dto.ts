@@ -24,4 +24,7 @@ export class CreateShgDto {
   @IsString()
   @IsNotEmpty()
   clfId: string;
+
+  @IsString()
+  type: string;
 }
