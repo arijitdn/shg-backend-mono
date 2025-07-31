@@ -13,6 +13,8 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 export class OrgAuthController {
   constructor(private authService: OrgAuthService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.BMMU)
   @Post('create-member')
   register(@Body() createMemberDto: CreateMemberDto) {
     return this.authService.createMember(createMemberDto);

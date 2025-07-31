@@ -29,9 +29,13 @@ export class OrgAuthService {
     });
     if (exists) throw new ConflictException('Phone is already in use');
 
-    const hash = await this.hashPassword(dto.password);
+    const userId = 'U' + Math.floor(1000 + Math.random() * 9000).toString();
+    const password = dto.phone;
+
+    const hash = await this.hashPassword(password);
     const user = this.dbService.userRepo.create({
       ...dto,
+      userId,
       password: hash,
     });
     await this.dbService.userRepo.save(user);
