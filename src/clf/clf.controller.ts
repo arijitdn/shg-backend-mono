@@ -36,22 +36,25 @@ export class ClfController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU, UserRole.DMMU)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clfService.findOne(id);
+  @Get(':groupId')
+  findOne(@Param('groupId') groupId: string) {
+    return this.clfService.findOne(groupId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClfDto: UpdateClfDto) {
-    return this.clfService.update(id, updateClfDto);
+  @Patch(':groupId')
+  update(
+    @Param('groupId') groupId: string,
+    @Body() updateClfDto: UpdateClfDto,
+  ) {
+    return this.clfService.update(groupId, updateClfDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clfService.remove(id);
+  @Delete(':groupId')
+  remove(@Param('groupId') groupId: string) {
+    return this.clfService.remove(groupId);
   }
 }

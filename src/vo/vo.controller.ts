@@ -36,22 +36,22 @@ export class VoController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU, UserRole.DMMU, UserRole.NIC)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.voService.findOne(id);
+  @Get(':groupId')
+  findOne(@Param('groupId') groupId: string) {
+    return this.voService.findOne(groupId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVoDto: UpdateVoDto) {
-    return this.voService.update(id, updateVoDto);
+  @Patch(':groupId')
+  update(@Param('groupId') groupId: string, @Body() updateVoDto: UpdateVoDto) {
+    return this.voService.update(groupId, updateVoDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.BMMU)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.voService.remove(id);
+  @Delete(':groupId')
+  remove(@Param('groupId') groupId: string) {
+    return this.voService.remove(groupId);
   }
 }

@@ -20,17 +20,17 @@ export class VoService {
     return await this.dbService.voRepo.find();
   }
 
-  async findOne(id: string) {
+  async findOne(groupId: string) {
     return await this.dbService.voRepo.findOneBy({
-      id,
+      groupId,
     });
   }
 
-  async update(id: string, updateVoDto: UpdateVoDto) {
-    return await this.dbService.voRepo.update(id, updateVoDto);
+  async update(groupId: string, updateVoDto: UpdateVoDto) {
+    return await this.dbService.voRepo.update(groupId, updateVoDto);
   }
 
-  async remove(id: string) {
-    return await this.dbService.voRepo.delete(id);
+  async remove(groupId: string) {
+    return await this.dbService.voRepo.delete(groupId);
   }
 }

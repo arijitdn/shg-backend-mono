@@ -20,17 +20,17 @@ export class ClfService {
     return await this.dbService.clfRepo.find();
   }
 
-  async findOne(id: string) {
+  async findOne(groupId: string) {
     return await this.dbService.clfRepo.findOneBy({
-      id,
+      groupId,
     });
   }
 
-  async update(id: string, updateClfDto: UpdateClfDto) {
-    return await this.dbService.clfRepo.update(id, updateClfDto);
+  async update(groupId: string, updateClfDto: UpdateClfDto) {
+    return await this.dbService.clfRepo.update(groupId, updateClfDto);
   }
 
-  async remove(id: string) {
-    return await this.dbService.clfRepo.delete(id);
+  async remove(groupId: string) {
+    return await this.dbService.clfRepo.delete(groupId);
   }
 }
