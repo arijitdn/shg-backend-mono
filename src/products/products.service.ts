@@ -67,7 +67,7 @@ export class ProductsService {
         }
       }
 
-      if (product.type !== productType.NFC) {
+      if (product.type === productType.SINGLE) {
         if (product.userId) {
           const user = await this.dbService.userRepo.findOne({
             where: { userId: product.userId },
