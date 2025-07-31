@@ -64,7 +64,6 @@ export class ProductsController {
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID' })
-  //@ApiBody({ type: UpdateProductDto })
   @UseInterceptors(FileInterceptor('image'))
   update(
     @Param('id') id: string,
@@ -91,14 +90,14 @@ export class ProductsController {
   }
 
   @Get('vo/list')
-  //@Roles(UserRole.VO)
+  @Roles(UserRole.VO)
   @ApiOperation({ summary: 'Get products for VO role' })
   getProductsForVO() {
     return this.productsService.findProductsForVO();
   }
 
   @Get('clf/list')
-  //@Roles(UserRole.CLF)
+  @Roles(UserRole.CLF)
   @ApiOperation({ summary: 'Get products for CLF role' })
   getProductsForCLF() {
     return this.productsService.findProductsForCLF();

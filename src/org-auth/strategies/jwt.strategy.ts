@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { ShgAuthService } from '../org-auth.service';
+import { OrgAuthService } from '../org-auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: ShgAuthService) {
+  constructor(private authService: OrgAuthService) {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET environment variable is not defined');
     }

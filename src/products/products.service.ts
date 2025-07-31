@@ -33,7 +33,61 @@ export class ProductsService {
   }
 
   async findAll(): Promise<ProductEntity[]> {
-    return await this.dbService.productRepo.find();
+    const products = await this.dbService.productRepo.find();
+
+    const productsWithShgNameAndUserName = products.map(async (product) => {
+      let shgName = 'N/A';
+      let userName = 'N/A';
+      let voName = 'N/A';
+      let clfName = 'N/A';
+
+      if (product.shgId) {
+        const shg = await this.dbService.shgRepo.findOne({
+          where: { groupId: product.shgId },
+        });
+        if (shg) {
+          shgName = shg.name;
+          if (shg.voId) {
+            const vo = await this.dbService.voRepo.findOne({
+              where: { groupId: shg.voId },
+            });
+            if (vo) {
+              voName = vo.name;
+            }
+          }
+
+          if (shg.clfId) {
+            const clf = await this.dbService.clfRepo.findOne({
+              where: { groupId: shg.clfId },
+            });
+            if (clf) {
+              clfName = clf.name;
+            }
+          }
+        }
+      }
+
+      if (product.type !== productType.NFC) {
+        if (product.userId) {
+          const user = await this.dbService.userRepo.findOne({
+            where: { userId: product.userId },
+          });
+          if (user) {
+            userName = user.name;
+          }
+        }
+      }
+
+      return {
+        ...product,
+        shgName,
+        userName,
+        voName,
+        clfName,
+      };
+    });
+
+    return Promise.all(productsWithShgNameAndUserName);
   }
 
   async findOne(id: string): Promise<ProductEntity> {
@@ -194,6 +248,7 @@ export class ProductsService {
     product.status = ProductStatus.PENDING;
     product.isRejected = false;
     product.isRecommended = false;
+    product.remarks = '';
 
     const updated = Object.assign(product, updateProductDto);
     const saved = await this.dbService.productRepo.save(updated);

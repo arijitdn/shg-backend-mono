@@ -46,7 +46,7 @@ export class TRLMAdminEntity {
     enum: TRLMLevel,
     default: TRLMLevel.DMMU,
   })
-  level: TRLMLevel;
+  role: TRLMLevel;
 
   @CreateDateColumn()
   createdAt: Date;

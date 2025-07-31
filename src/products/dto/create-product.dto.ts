@@ -53,4 +53,7 @@ export class CreateProductDto {
 
   @IsOptional()
   verificationDate?: Date;
+
+  @IsOptional()
+  remarks: string;
 }

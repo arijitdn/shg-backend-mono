@@ -46,7 +46,6 @@ export class OrgAuthService {
     const hash = await this.hashPassword(createAdminDto.password);
     const user = this.dbService.trlmRepo.create({
       ...createAdminDto,
-      level: createAdminDto.role,
       password: hash,
     });
     await this.dbService.trlmRepo.save(user);
@@ -98,7 +97,7 @@ export class OrgAuthService {
 
         const user = await this.dbService.trlmRepo.findOneBy({
           email,
-          level: role as TRLMLevel,
+          role: role as TRLMLevel,
         });
 
         if (!user) throw new UnauthorizedException('Invalid credentials');
@@ -123,50 +122,50 @@ export class OrgAuthService {
     }
   }
 
-  async getDetails(userId: string, shgId: string) {
-    const user = await this.dbService.userRepo.findOneBy({
-      userId,
-    });
-
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const shg = await this.dbService.shgRepo.findOneBy({
-      groupId: shgId,
-    });
-
-    if (!shg) {
-      throw new UnauthorizedException('SHG not found');
-    }
-
-    return {
-      username: user.name,
-      shgName: shg.name,
-    };
-  }
-
   async refreshToken(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
 
-      const user = await this.dbService.userRepo.findOneBy({ id: payload.sub });
-      if (!user) throw new UnauthorizedException('Invalid refresh token');
+      const userRole = payload.role;
 
-      return { accessToken: this.generateAccessToken(user) };
+      if (['SHG', 'VO', 'CLF'].includes(userRole)) {
+        const user = await this.dbService.userRepo.findOneBy({
+          id: payload.sub,
+        });
+        if (!user) throw new UnauthorizedException('Invalid refresh token');
+
+        return { accessToken: this.generateAccessToken(user) };
+      } else if (['NIC', 'DMMU', 'BMMU'].includes(userRole)) {
+        const user = await this.dbService.trlmRepo.findOneBy({
+          id: payload.sub,
+        });
+        if (!user) throw new UnauthorizedException('Invalid refresh token');
+
+        return { accessToken: this.generateAccessToken(user) };
+      }
     } catch {
       throw new UnauthorizedException('Invalid or expired refresh token');
     }
   }
 
   async getUserById(userId: string) {
-    const user = await this.dbService.userRepo.findOne({
+    let user: UserEntity | TRLMAdminEntity | null = null;
+
+    user = await this.dbService.userRepo.findOne({
       where: { id: userId },
     });
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      user = await this.dbService.trlmRepo.findOne({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
     }
 
     const { password, ...result } = user;
@@ -202,14 +201,15 @@ export class OrgAuthService {
 
   private generateAccessToken(user: UserEntity | TRLMAdminEntity): string {
     const payload: any = { sub: user.id };
+
     if ('role' in user) {
       payload.role = user.role;
-    } else if ('level' in user) {
-      payload.role = user.level;
     }
+
     if ('phone' in user) {
       payload.phone = user.phone;
     }
+
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET'),
       expiresIn: this.configService.get('JWT_EXPIRY') || '15m',
@@ -218,6 +218,7 @@ export class OrgAuthService {
 
   private generateRefreshToken(user: UserEntity | TRLMAdminEntity): string {
     const payload: any = { sub: user.id };
+
     return this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRET'),
       expiresIn: this.configService.get('JWT_REFRESH_EXPIRY') || '7d',
