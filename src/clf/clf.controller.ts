@@ -57,4 +57,11 @@ export class ClfController {
   remove(@Param('groupId') groupId: string) {
     return this.clfService.remove(groupId);
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.BMMU, UserRole.DMMU, UserRole.NIC)
+  @Get('members/:groupId')
+  getMembers(@Param('groupId') groupId: string) {
+    return this.clfService.getMembers(groupId);
+  }
 }

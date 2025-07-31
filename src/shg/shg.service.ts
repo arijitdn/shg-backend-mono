@@ -30,4 +30,21 @@ export class ShgService {
   async remove(id: string) {
     return await this.dbService.shgRepo.delete(id);
   }
+
+  async getMembers(organizationId: string) {
+    return this.dbService.userRepo.find({
+      where: { organizationId },
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+        organizationId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
 }

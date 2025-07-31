@@ -54,4 +54,11 @@ export class VoController {
   remove(@Param('groupId') groupId: string) {
     return this.voService.remove(groupId);
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.BMMU, UserRole.DMMU, UserRole.NIC)
+  @Get('members/:groupId')
+  getMembers(@Param('groupId') groupId: string) {
+    return this.voService.getMembers(groupId);
+  }
 }

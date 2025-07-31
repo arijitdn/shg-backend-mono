@@ -54,4 +54,11 @@ export class ShgController {
   remove(@Param('id') id: string) {
     return this.shgService.remove(id);
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.BMMU, UserRole.DMMU, UserRole.NIC)
+  @Get('members/:groupId')
+  getMembers(@Param('groupId') groupId: string) {
+    return this.shgService.getMembers(groupId);
+  }
 }
