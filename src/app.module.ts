@@ -13,6 +13,7 @@ import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { ShopModule } from './shop/shop.module';
 import { CategoriesModule } from './categories/categories.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CategoriesModule } from './categories/categories.module';
     AdminModule,
     ShopModule,
     CategoriesModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,22 +7,30 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { DbService } from '@app/db/db.service';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderStatus } from '@app/db/enums/order-status';
+import { normalizePrice } from '../utils/price.utils';
 
 @Injectable()
 export class OrderService {
   constructor(private readonly dbService: DbService) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    // Calculate orderPrice based on originalPrice and discount (flat or percent)
+    // Ensure prices are in paise format
     let { originalPrice, discount = 0, discountType, status } = createOrderDto;
+    originalPrice = normalizePrice(originalPrice);
+
+    // Calculate orderPrice based on originalPrice and discount (flat or percent)
     let orderPrice = originalPrice;
     if (discount > 0 && discountType === 'percent') {
       orderPrice = originalPrice - (originalPrice * discount) / 100;
     } else if (discount > 0 && discountType === 'flat') {
-      orderPrice = originalPrice - discount;
+      // Ensure discount is also in paise if it's a flat amount
+      const discountInPaise = normalizePrice(discount);
+      orderPrice = originalPrice - discountInPaise;
     }
+
     const order = this.dbService.orderRepo.create({
       ...createOrderDto,
+      originalPrice,
       orderPrice,
       status: status || OrderStatus.CREATED,
       statusUpdatedAt: new Date(),

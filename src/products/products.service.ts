@@ -10,6 +10,7 @@ import { ProductEntity } from '@app/db/entities';
 import { productType } from '@app/db/enums/product-type.enum';
 import { ProductStatus } from '@app/db/enums/product-status.enum';
 import { StorageService } from '@app/storage';
+import { normalizePrice } from '../utils/price.utils';
 
 @Injectable()
 export class ProductsService {
@@ -26,8 +27,15 @@ export class ProductsService {
     if (image) {
       imageUrl = await this.storageService.uploadFile(image);
     }
+
+    // Ensure price is stored in paise
+    const normalizedPrice = normalizePrice(createProductDto.price);
+
     const product = this.dbService.productRepo.create(
-      Object.assign({}, createProductDto, { imageUrl }),
+      Object.assign({}, createProductDto, {
+        imageUrl,
+        price: normalizedPrice,
+      }),
     );
     return await this.dbService.productRepo.save(product);
   }
@@ -110,6 +118,12 @@ export class ProductsService {
         await this.storageService.deleteFile(product.imageUrl);
       product.imageUrl = await this.storageService.uploadFile(image);
     }
+
+    // Ensure price is stored in paise if being updated
+    if (updateProductDto.price !== undefined) {
+      updateProductDto.price = normalizePrice(updateProductDto.price);
+    }
+
     const updated = Object.assign(product, updateProductDto);
     const saved = await this.dbService.productRepo.save(updated);
     return saved;
