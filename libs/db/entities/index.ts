@@ -6,3 +6,7 @@ export * from './trlm-admin.entity';
 export * from './product.entity';
 export * from './notifications.entity';
 export * from './posts.entity';
+export * from './customer.entity';
+export * from './cart.entity';
+export * from './cart-item.entity';
+export * from './order.entity';

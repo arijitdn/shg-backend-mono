@@ -11,6 +11,8 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { OrderModule } from './order/order.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { ShopModule } from './shop/shop.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { AuthModule } from './auth/auth.module';
     AnalyticsModule,
     OrderModule,
     AdminModule,
+    ShopModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
