@@ -64,7 +64,7 @@ export class EmployeesService {
     if (updateEmployeeDto.status !== undefined)
       updateData.status = updateEmployeeDto.status;
     if (updateEmployeeDto.level !== undefined)
-      updateData.level = updateEmployeeDto.level as TRLMLevel;
+      updateData.role = updateEmployeeDto.level as TRLMLevel;
 
     // Hash password if it's being updated
     if (updateEmployeeDto.password) {
