@@ -1,10 +1,14 @@
+const nodeExternals = require("webpack-node-externals");
+
 module.exports = (options) => {
 	return {
 		...options,
-		externals: {
-			// Mark Node.js built-in modules as external
-			crypto: "commonjs crypto",
-		},
+		externals: [
+			nodeExternals({
+				// Allow bundling of local workspace libraries
+				allowlist: [/^@app\//],
+			}),
+		],
 		target: "node",
 		node: {
 			__dirname: false,
